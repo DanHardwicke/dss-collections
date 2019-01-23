@@ -1,3 +1,4 @@
+using DFC.Common.Standard.Logging;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
@@ -9,6 +10,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using NCS.DSS.Collections.GetCollectionsHttpTrigger.Service;
 using NCS.DSS.Collections.Models;
+using NCS.DSS.Collections.Validators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,26 +36,32 @@ namespace NCS.DSS.Collections.GetCollectionsHttpTrigger.Function
             [Inject]IGetCollectionsHttpTriggerService service,
             [Inject]IJsonHelper jsonHelper,
             [Inject]IHttpRequestHelper requestHelper,
-            [Inject]IHttpResponseMessageHelper responseMessageHelper)
+            [Inject]IHttpResponseMessageHelper responseMessageHelper,
+            [Inject]ILoggerHelper loggerHelper,
+            [Inject]IDssCorrelationValidator dssCorrelationValidator,
+            [Inject]IDssTouchpointValidator dssTouchpointValidator)
         {
-            log.LogInformation("Get Collections C# HTTP trigger function processing a request. TouchpointId " + requestHelper.GetDssTouchpointId(req));            
+            loggerHelper.LogMethodEnter(log);
 
-            try
-            {
-                var results = await service.ProcessRequestAsync();
+            var correlationId = dssCorrelationValidator.Extract(req, log);
 
-                if (results.Count == 0)
-                {
-                    return responseMessageHelper.NoContent();
-                }
+            var touchpointId = dssTouchpointValidator.Extract(req, log);
 
-                return responseMessageHelper.Ok(jsonHelper.SerializeObjectsAndRenameIdProperty<Collection>(results, "id", "CollectionId"));
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex, "Get Collections C# HTTP trigger function");
-                return responseMessageHelper.UnprocessableEntity();
-            }            
+            if (string.IsNullOrEmpty(touchpointId))
+                return responseMessageHelper.BadRequest();
+
+            if (!Guid.TryParse(touchpointId, out var touchpointGuid))
+                return responseMessageHelper.BadRequest();
+
+            var results = await service.ProcessRequestAsync(touchpointGuid);
+
+            if (results.Count == 0)
+                return responseMessageHelper.NoContent();
+
+            loggerHelper.LogMethodExit(log);
+
+            return responseMessageHelper.Ok(jsonHelper.SerializeObjectsAndRenameIdProperty(results, "id", "CollectionId"));
+            
         }
     }
 }

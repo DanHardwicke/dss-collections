@@ -13,7 +13,7 @@ namespace NCS.DSS.Collections.Validators
 
             if (entity.CollectionId == Guid.Empty)
             {
-                result.Add(new ValidationError("Null CustomerId"));                
+                entity.CollectionId = Guid.NewGuid();             
             }
 
             if (entity.TouchPointId == Guid.Empty)

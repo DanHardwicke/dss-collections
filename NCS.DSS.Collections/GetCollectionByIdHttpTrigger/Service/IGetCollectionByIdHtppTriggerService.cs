@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using NCS.DSS.Collections.Models;
+﻿using NCS.DSS.Collections.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace NCS.DSS.Collections.GetCollectionByIdHttpTrigger.Service
 {
     public interface IGetCollectionByIdHtppTriggerService
     {
-        Task<Collection> ProcessRequestAsync(string collectionId);
+        Task<Collection> ProcessRequestAsync(Guid touchpointId, Guid collectionId);
     }
 }
