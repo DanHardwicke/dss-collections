@@ -117,11 +117,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AzureSearch.feature</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataLoadHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\RestHelper.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\ILoader.cs" />
     <Compile Include="Models\LoadAddress.cs" />
     <Compile Include="Models\LoadContact.cs" />
     <Compile Include="Models\LoadCustomer.cs" />

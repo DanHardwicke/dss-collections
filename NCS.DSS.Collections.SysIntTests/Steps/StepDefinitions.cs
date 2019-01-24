@@ -29,7 +29,8 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
         private IRestResponse response;
         private EnvironmentSettings envSettings = new EnvironmentSettings();
         private SearchResponse SearchResults;
-        internal static readonly AzureSearchSingleton InitialDataLoad = AzureSearchSingleton.Instance;
+        private readonly List<Loader> LoaderData = new List<Loader>();
+        internal static readonly AzureSearchSingleton CustomerDataLoad = AzureSearchSingleton.Instance;
 
 
         // For additional details on SpecFlow step definitions see http://go.specflow.org/doc-stepdef
@@ -296,13 +297,46 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
         [Given(@"I load test customer data for this feature:")]
         public void GivenILoadTestCustomerDataForThisFeature(Table table)
         {
-            if (InitialDataLoad.DataSetupExecuted)
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+            DataLoadHelper<LoadCustomer> dataLoadHelper = new DataLoadHelper<LoadCustomer>();
+            Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
+            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, "/customers/api/customers/");
+            LoaderData.AddRange(list);
+        }
+
+        [Given(@"I load test address data for this feature:")]
+        public void GivenILoadTestAddressDataForThisFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
             {
                 return;
             }
 
-            InitialDataLoad.DataSetupExecuted = true;
+            DataLoadHelper<LoadAddress> dataLoadHelper = new DataLoadHelper<LoadAddress>();
+            dataLoadHelper.ProcessDataTable(table, LoaderData, "addresses/api/Customers/CustomerId/addresses/", "CustomerId");
+
+            
         }
+
+        [Given(@"I load test contact data for this feature:")]
+        public void GivenILoadTestContactDataForThisFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+
+            DataLoadHelper<LoadContact> dataLoadHelper = new DataLoadHelper<LoadContact>();
+            dataLoadHelper.ProcessDataTable(table, LoaderData, "contactdetails/api/Customers/CustomerId/contactdetails/", "CustomerId");
+
+            CustomerDataLoad.DataSetupExecuted = true;
+        }
+
+
+
 
 
     }

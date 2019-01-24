@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Text.RegularExpressions;
+using System.Threading;     
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -42,6 +43,13 @@ namespace NCS.DSS.Collections.SysIntTests.UnitTests
         private readonly List<Loader> LoaderData = new List<Loader>();
 
 
+        [TestMethod]
+        public void RegexTest()
+        {
+            Regex rxv = new Regex(@"[+-]{0,1}\d+");
+            var newValue = rxv.Match("b1").Value;
+            var value2 = System.Text.RegularExpressions.Regex.Split("234234 23 234234", @"\s+");
+        }
         [TestMethod]
         public void TimeTest()
         {

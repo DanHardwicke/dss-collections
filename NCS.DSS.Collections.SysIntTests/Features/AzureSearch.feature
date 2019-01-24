@@ -2,16 +2,17 @@
 
 Background:
 	Given I load test customer data for this feature:
-	| LoaderRef | Title | GivenName | FamilyName   | DateofBirth          | DateOfRegistration   | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination    | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
-	| 1         | 4     | AARON     | O'Connors    | 1953-02-13T00:00:00Z | 2018-10-28T00:00:00Z | 9999900001          | true              | false               | 2018-11-27T00:00:00Z | 1                    | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
-	| 2         | 3     | ab        | Manning      | 1994-06-07T00:00:00Z | 2018-11-15T00:00:00Z | 9999900002          | true              | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
-	| 3         | 99    | Abbie     | Marshall     | 1993-04-10T00:00:00Z | 2018-11-28T00:00:00Z | 9999900003          | true              | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
-	| 4         | 2     | Abby      | MacLeod      | 1973-05-10T00:00:00Z | 2018-10-21T00:00:00Z | 9999900004          | false             | false               |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
-	| 5         | 5     | Abe       | O'Connors    | 1963-12-22T00:00:00Z | 2018-11-16T00:00:00Z | 9999900005          | false             | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
-	| 6         | 1     | Abednego  | N'Dours      | 1989-04-10T00:00:00Z | 2019-01-03T00:00:00Z | 9999900006          | true              | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
-	| 7         | 4     | ABEL      | D' Angelos   | 1993-06-13T00:00:00Z | 2019-01-07T00:00:00Z | 9999900007          | true              | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
-	| 8         | 2     | Abiel     | D' Artagnans | 1969-06-13T00:00:00Z | 2018-11-26T00:00:00Z | 9999900008          | false             | true                |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
-	| 9         | 99    | ABIGAIL   | D' Artagnans | 1959-08-11T00:00:00Z | 2018-12-13T00:00:00Z | 9999900009          | false             | false               |                      |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-16T00:00:00Z |
+	| LoaderRef | Title | GivenName | FamilyName | DateofBirth    | DateOfRegistration   | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
+	| 1         | 4     | AARON     | O'Connors  | Today -18Y +1D | Now -3D              | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+
+	Given I load test address data for this feature:
+	| LoaderRef | Address1      | Address2      | Address3 | Address4 | Address5 | PostCode | AlternativePostCode | Longitude | Latitude | EffectiveFrom | EffectiveTo | LastModifiedDate     | LastModifiedTouchpointId |
+	| 1         | 6 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+
+	 Given I load test contact data for this feature:
+	| LoaderRef | PreferredContactMethod | MobileNumber | HomeNumber  | AlternativeNumber | EmailAddress        | LastModifiedDate     | LastModifiedTouchpointId |
+	| 1         | 4                      | 07484503700  | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+
 
 
 @mytag

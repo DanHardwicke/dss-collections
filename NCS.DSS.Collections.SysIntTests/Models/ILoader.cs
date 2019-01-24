@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NCS.DSS.Collections.SysIntTests.Models
 {
-    class LoadCustomer : Customer, ILoader
+    interface ILoader
     {
-        public string LoaderRef { get; set; }
-        public string CustomerId { get; set; }
+        string LoaderRef { get; set; }
+        string CustomerId { get; set; }
     }
 }

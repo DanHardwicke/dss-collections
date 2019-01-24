@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NCS.DSS.Collections.SysIntTests.Models
 {
-    class LoadAddress: Address
+    class LoadAddress: Address, ILoader
     {
         public string LoaderRef { get; set; }
     }
