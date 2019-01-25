@@ -303,7 +303,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
             DataLoadHelper<LoadCustomer> dataLoadHelper = new DataLoadHelper<LoadCustomer>();
             Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
-            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, "/customers/api/customers/");
+            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, "/customers/api/customers/","","CustomerId");
             LoaderData.AddRange(list);
         }
 
@@ -316,9 +316,9 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadAddress> dataLoadHelper = new DataLoadHelper<LoadAddress>();
-            dataLoadHelper.ProcessDataTable(table, LoaderData, "addresses/api/Customers/CustomerId/addresses/", "CustomerId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "addresses/api/Customers/CustomerId/addresses/", "CustomerId", "AddressId" );
+            LoaderData.AddRange(list);
 
-            
         }
 
         [Given(@"I load test contact data for this feature:")]
@@ -330,12 +330,99 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadContact> dataLoadHelper = new DataLoadHelper<LoadContact>();
-            dataLoadHelper.ProcessDataTable(table, LoaderData, "contactdetails/api/Customers/CustomerId/contactdetails/", "CustomerId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "contactdetails/api/Customers/CustomerId/contactdetails/", "CustomerId", "ContactId");
+            LoaderData.AddRange(list);
 
+        }
+
+        [Given(@"I load test interaction data for this feature")]
+        public void GivenILoadTestInteractionDataForThisFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+
+            DataLoadHelper<LoadInteraction> dataLoadHelper = new DataLoadHelper<LoadInteraction>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "interactions/api/Customers/CustomerId/Interactions/", "CustomerId", "InteractionId");
+            LoaderData.AddRange(list);
+
+        }
+
+        [Given(@"I load test session data for the feature")]
+        public void GivenILoadTestSessionDataForTheFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+            DataLoadHelper<LoadSession> dataLoadHelper = new DataLoadHelper<LoadSession>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "sessions/api/Customers/CustomerId/Interactions/InteractionId/sessions/", "InteractionId", "SessionId");
+            LoaderData.AddRange(list);
+        }
+
+        [Given(@"I load action plan data for the feature")]
+        public void GivenILoadActionPlanDataForTheFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+            DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actionplans/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/", "InteractionId", "ActionPlanId");
+            LoaderData.AddRange(list);
+            /*
+                         DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actionplans/api/Customers/CustomerId/Interactions/InteractionId/Sessions/SessionId/ActionPlans/", "SessionId", "ActionPlanId");
+            LoaderData.AddRange(list);
+            */
+        }
+
+
+        [Given(@"I load action data for the feature")]
+        public void GivenILoadActionDataForTheFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+
+            DataLoadHelper<LoadAction> dataLoadHelper = new DataLoadHelper<LoadAction>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actions/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/ActionPlanId/actions/", "ActionPlanId", "ActionId");
+            LoaderData.AddRange(list);
+
+        }
+
+
+        [Given(@"I load outcome data for the feature")]
+        public void GivenILoadOutcomeDataForTheFeature(Table table)
+        {
+            if (CustomerDataLoad.DataSetupExecuted)
+            {
+                return;
+            }
+
+            DataLoadHelper<LoadOutcome> dataLoadHelper = new DataLoadHelper<LoadOutcome>();
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "outcomes/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/ActionPlanId/outcomes/", "ActionPlanId", "OutcomeId");
+            LoaderData.AddRange(list);
+
+        }
+
+        [Given(@"I have completed loading data and don't want to repeat for each test")]
+        public void GivenIHaveCompletedLoadingDataAndDonTWantToRepeatForEachTest()
+        {
+            Console.WriteLine("List of entities created during data load");
+            Console.WriteLine("-----------------------------------------");
+            foreach ( var item in LoaderData)
+            {
+                Console.WriteLine("Test Customer: " + item.LoaderReference + ", " +item.ParentType + ": " + item.ParentId);
+            }
             CustomerDataLoad.DataSetupExecuted = true;
         }
 
 
+
+      
 
 
 

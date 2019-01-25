@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NCS.DSS.Collections.SysIntTests.Models
 {
-    class LoadContact : Contact, ILoader
+    class LoadOutcome : Outcome, ILoader
     {
         public string LoaderRef { get; set; }
         public string ParentRef { get; set; }

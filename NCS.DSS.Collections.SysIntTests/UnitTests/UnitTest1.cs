@@ -96,7 +96,7 @@ namespace NCS.DSS.Collections.SysIntTests.UnitTests
                         if (response.StatusCode == System.Net.HttpStatusCode.Created)
                         {
                             // store returned customer ID with loader reference
-                            LoaderData.Add(new Loader(customer.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content,"CustomerId")));
+                           // // // LoaderData.Add(new Loader(customer.LoaderRef);//, JsonHelper.GetPropertyFromJsonString(response.Content,"CustomerId")));
                         }
 
                     }
@@ -130,7 +130,7 @@ namespace NCS.DSS.Collections.SysIntTests.UnitTests
                         var list = LoaderData.Where(item => item.LoaderReference == address.LoaderRef);
                         foreach (var item in list)
                         {
-                            address.CustomerId = item.CustomerID;
+            //                address.CustomerId = item.CustomerID;
 
                             string json = JsonConvert.SerializeObject(address, Formatting.Indented);//, settings);
 
@@ -175,7 +175,7 @@ namespace NCS.DSS.Collections.SysIntTests.UnitTests
                         var list = LoaderData.Where(item => item.LoaderReference == contact.LoaderRef);
                         foreach (var item in list)
                         {
-                            contact.CustomerId = item.CustomerID;
+               //             contact.CustomerId = item.CustomerID;
 
                             string json = JsonConvert.SerializeObject(contact, Formatting.Indented);//, settings);
 

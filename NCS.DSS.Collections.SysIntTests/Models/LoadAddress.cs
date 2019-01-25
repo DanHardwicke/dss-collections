@@ -9,5 +9,7 @@ namespace NCS.DSS.Collections.SysIntTests.Models
     class LoadAddress: Address, ILoader
     {
         public string LoaderRef { get; set; }
+        public string ParentRef { get; set; }
+        //public string InteractionRef { get; set; }
     }
 }

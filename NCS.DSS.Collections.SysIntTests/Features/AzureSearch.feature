@@ -2,18 +2,66 @@
 
 Background:
 	Given I load test customer data for this feature:
+	#Parent for ADDRESS in CUSTOMER
 	| LoaderRef | Title | GivenName | FamilyName | DateofBirth    | DateOfRegistration   | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
-	| 1         | 4     | AARON     | O'Connors  | Today -18Y +1D | Now -3D              | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| BOB      | 4     | BOBRON     | O'Connors  | Today -18Y +1D | Now -3D              | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
 
 	Given I load test address data for this feature:
+	#Parent for ADDRESS is CUSTOMER
 	| LoaderRef | Address1      | Address2      | Address3 | Address4 | Address5 | PostCode | AlternativePostCode | Longitude | Latitude | EffectiveFrom | EffectiveTo | LastModifiedDate     | LastModifiedTouchpointId |
-	| 1         | 6 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| BOB       | 6 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
 
 	 Given I load test contact data for this feature:
+	#Parent for CONTACT is CUSTOMER
 	| LoaderRef | PreferredContactMethod | MobileNumber | HomeNumber  | AlternativeNumber | EmailAddress        | LastModifiedDate     | LastModifiedTouchpointId |
-	| 1         | 4                      | 07484503700  | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| BOB       | 4                      | 07484503700  | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+
+	Given I load test interaction data for this feature
+	#Parent for INTERACTION is CUSTOMER
+	| LoaderRef | TouchpointId | AdviserDetailsId                     | DateandTimeOfInteraction | Channel | InteractionType | LastModifiedDate     | LastModifiedTouchpointId |
+	| BOB       | 4            | bb940afb-1423-4999-a234-5a64a5c00831 | 2019-01-23T00:00:00Z     | 1       | 3               | 2019-01-23T00:00:00Z | 90000001                 |
+	| BOB       | 4            | bb940afb-1423-4999-a234-5a64a5c00831 | 2019-01-23T00:00:00Z     | 2       | 3               | 2019-01-23T00:00:00Z | 90000001                 |
+
+	Given I load test session data for the feature
+	#Parent for SESSION is INTERACTION
+	| LoaderRef | ParentRef | DateandTimeOfSession | VenuePostCode | SessionAttended      | ReasonForNonAttendance | LastModifiedDate     | LastModifiedTouchpointId |
+	| BOB         | 1         | 2018-06-21T14:45:00Z | NE9 7RG       | true                 |                        | 2019-01-23T00:00:00Z | 90000001                 |
+	| BOB         | 2         | 2018-06-21T14:45:00Z | NE9 7RG       | false                | 1                      | 2019-01-23T00:00:00Z | 90000001                 |
+
+	Given I load action plan data for the feature
+	#Parent for ACTION PLAN is SESSION
+	| LoaderRef | ParentRef | DateActionPlanCreated | CustomerCharterShownToCustomer | DateAndTimeCharterShown | DateActionPlanSentToCustomer | ActionPlanDeliveryMethod | DateActionPlanAcknowledged | PriorityCustomer | CurrentSituation |
+	| BOB       | 1         | 2018-07-30T09:00:00Z  | true                           | 2018-07-30T09:00:00Z    | 2018-07-30T09:00:00Z         | 1                        | 2018-07-30T09:00:00Z       | 1                | looking for work |
+
+	Given I load action data for the feature
+	#Parent for ACTION is ACTION PLAN
+	| LoaderRef | ParentRef | DateActionAgreed     | DateActionAimsToBeCompletedBy | ActionSummary    | SignpostedTo | ActionType | ActionStatus | PersonResponsible | LastModifiedDate     |
+	| BOB       | 1         | 2018-07-30T09:00:00Z | 2018-08-08T09:00:00Z          | Details of stuff | Someone      | 1          | 1            | 1                 | 2018-07-30T09:00:00Z |
+
+	Given I load outcome data for the feature
+	| LoaderRef | ParentRef | OutcomeType | OutcomeClaimedDate   | OutcomeEffectiveDate |
+	| BOB       | 1         | 3           | 2018-07-20T21:45:00Z | 2018-07-20T21:45:00Z | 
+
+	Given I have completed loading data and don't want to repeat for each test
 
 
+	## ineractions
+	## session
+	## action plan
+	## etc
+
+	Given I load test customer data for this feature:
+	| Type     | F1                     | F2            | F3          | F4                | F5                  | F6                   | F7                       | F8                  | F9                | F10                  | F11          | F12                        | F13                      |
+	| Customer | Title                  | GivenName     | FamilyName  | DateofBirth       | DateOfRegistration  | UniqueLearnerNumber  | OptInUserResearch        | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate         |
+	|          | 4                      | AARON         | O'Connors   | Today -18Y +1D    | Now -3D             | 9999900001           | true                     | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z     |
+	| Address  | Address1               | Address2      | Address3    | Address4          | Address5            | PostCode             | AlternativePostCode      | Longitude           | Latitude          | EffectiveFrom        | EffectiveTo  | LastModifiedDate           | LastModifiedTouchpointId |
+	|          | 6 Lake Street          | North Walsham |             |                   |                     | B44 9UX              | EC2P 2AG                 |                     |                   |                      |              | 2019-01-23T00:00:00Z       | 90000001                 |
+	| Contact  | PreferredContactMethod | MobileNumber  | HomeNumber  | AlternativeNumber | EmailAddress        | LastModifiedDate     | LastModifiedTouchpointId |                     |                   |                      |              |                            |                          |  
+	|          | 4                      | 07484503700   | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |                     |                   |                      |              |                            |                          |  
+	## ineractions
+	## session
+	## action plan
+	## etc
 
 @mytag
 Scenario: Synonym name search for Aaron

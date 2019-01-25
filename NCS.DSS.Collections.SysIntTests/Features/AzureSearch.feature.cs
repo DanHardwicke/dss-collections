@@ -89,9 +89,9 @@ namespace NCS.DSS.Collections.SysIntTests.Features
                         "IntroducedByAdditionalInfo",
                         "LastModifiedDate"});
             table1.AddRow(new string[] {
-                        "1",
+                        "BOB",
                         "4",
-                        "AARON",
+                        "BOBRON",
                         "O\'Connors",
                         "Today -18Y +1D",
                         "Now -3D",
@@ -122,7 +122,7 @@ namespace NCS.DSS.Collections.SysIntTests.Features
                         "LastModifiedDate",
                         "LastModifiedTouchpointId"});
             table2.AddRow(new string[] {
-                        "1",
+                        "BOB",
                         "6 Lake Street",
                         "North Walsham",
                         "",
@@ -136,7 +136,7 @@ namespace NCS.DSS.Collections.SysIntTests.Features
                         "",
                         "2019-01-23T00:00:00Z",
                         "90000001"});
-#line 8
+#line 9
  testRunner.Given("I load test address data for this feature:", ((string)(null)), table2, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -149,7 +149,7 @@ namespace NCS.DSS.Collections.SysIntTests.Features
                         "LastModifiedDate",
                         "LastModifiedTouchpointId"});
             table3.AddRow(new string[] {
-                        "1",
+                        "BOB",
                         "4",
                         "07484503700",
                         "05100924950",
@@ -157,8 +157,243 @@ namespace NCS.DSS.Collections.SysIntTests.Features
                         "email2@domain2.test",
                         "2019-01-23T00:00:00Z",
                         "90000001"});
-#line 12
+#line 14
   testRunner.Given("I load test contact data for this feature:", ((string)(null)), table3, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "LoaderRef",
+                        "TouchpointId",
+                        "AdviserDetailsId",
+                        "DateandTimeOfInteraction",
+                        "Channel",
+                        "InteractionType",
+                        "LastModifiedDate",
+                        "LastModifiedTouchpointId"});
+            table4.AddRow(new string[] {
+                        "BOB",
+                        "4",
+                        "bb940afb-1423-4999-a234-5a64a5c00831",
+                        "2019-01-23T00:00:00Z",
+                        "1",
+                        "3",
+                        "2019-01-23T00:00:00Z",
+                        "90000001"});
+            table4.AddRow(new string[] {
+                        "BOB",
+                        "4",
+                        "bb940afb-1423-4999-a234-5a64a5c00831",
+                        "2019-01-23T00:00:00Z",
+                        "2",
+                        "3",
+                        "2019-01-23T00:00:00Z",
+                        "90000001"});
+#line 19
+ testRunner.Given("I load test interaction data for this feature", ((string)(null)), table4, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "LoaderRef",
+                        "ParentRef",
+                        "DateandTimeOfSession",
+                        "VenuePostCode",
+                        "SessionAttended",
+                        "ReasonForNonAttendance",
+                        "LastModifiedDate",
+                        "LastModifiedTouchpointId"});
+            table5.AddRow(new string[] {
+                        "BOB",
+                        "1",
+                        "2018-06-21T14:45:00Z",
+                        "NE9 7RG",
+                        "true",
+                        "",
+                        "2019-01-23T00:00:00Z",
+                        "90000001"});
+            table5.AddRow(new string[] {
+                        "BOB",
+                        "2",
+                        "2018-06-21T14:45:00Z",
+                        "NE9 7RG",
+                        "false",
+                        "1",
+                        "2019-01-23T00:00:00Z",
+                        "90000001"});
+#line 25
+ testRunner.Given("I load test session data for the feature", ((string)(null)), table5, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "LoaderRef",
+                        "ParentRef",
+                        "DateActionPlanCreated",
+                        "CustomerCharterShownToCustomer",
+                        "DateAndTimeCharterShown",
+                        "DateActionPlanSentToCustomer",
+                        "ActionPlanDeliveryMethod",
+                        "DateActionPlanAcknowledged",
+                        "PriorityCustomer",
+                        "CurrentSituation"});
+            table6.AddRow(new string[] {
+                        "BOB",
+                        "1",
+                        "2018-07-30T09:00:00Z",
+                        "true",
+                        "2018-07-30T09:00:00Z",
+                        "2018-07-30T09:00:00Z",
+                        "1",
+                        "2018-07-30T09:00:00Z",
+                        "1",
+                        "looking for work"});
+#line 31
+ testRunner.Given("I load action plan data for the feature", ((string)(null)), table6, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "LoaderRef",
+                        "ParentRef",
+                        "DateActionAgreed",
+                        "DateActionAimsToBeCompletedBy",
+                        "ActionSummary",
+                        "SignpostedTo",
+                        "ActionType",
+                        "ActionStatus",
+                        "PersonResponsible",
+                        "LastModifiedDate"});
+            table7.AddRow(new string[] {
+                        "BOB",
+                        "1",
+                        "2018-07-30T09:00:00Z",
+                        "2018-08-08T09:00:00Z",
+                        "Details of stuff",
+                        "Someone",
+                        "1",
+                        "1",
+                        "1",
+                        "2018-07-30T09:00:00Z"});
+#line 36
+ testRunner.Given("I load action data for the feature", ((string)(null)), table7, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "LoaderRef",
+                        "ParentRef",
+                        "OutcomeType",
+                        "OutcomeClaimedDate",
+                        "OutcomeEffectiveDate"});
+            table8.AddRow(new string[] {
+                        "BOB",
+                        "1",
+                        "3",
+                        "2018-07-20T21:45:00Z",
+                        "2018-07-20T21:45:00Z"});
+#line 41
+ testRunner.Given("I load outcome data for the feature", ((string)(null)), table8, "Given ");
+#line 45
+ testRunner.Given("I have completed loading data and don\'t want to repeat for each test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Type",
+                        "F1",
+                        "F2",
+                        "F3",
+                        "F4",
+                        "F5",
+                        "F6",
+                        "F7",
+                        "F8",
+                        "F9",
+                        "F10",
+                        "F11",
+                        "F12",
+                        "F13"});
+            table9.AddRow(new string[] {
+                        "Customer",
+                        "Title",
+                        "GivenName",
+                        "FamilyName",
+                        "DateofBirth",
+                        "DateOfRegistration",
+                        "UniqueLearnerNumber",
+                        "OptInUserResearch",
+                        "OptInMarketResearch",
+                        "DateOfTermination",
+                        "ReasonForTermination",
+                        "IntroducedBy",
+                        "IntroducedByAdditionalInfo",
+                        "LastModifiedDate"});
+            table9.AddRow(new string[] {
+                        "",
+                        "4",
+                        "AARON",
+                        "O\'Connors",
+                        "Today -18Y +1D",
+                        "Now -3D",
+                        "9999900001",
+                        "true",
+                        "false",
+                        "",
+                        "",
+                        "1",
+                        "ZZ_TESTDATA_ANON",
+                        "2019-01-17T00:00:00Z"});
+            table9.AddRow(new string[] {
+                        "Address",
+                        "Address1",
+                        "Address2",
+                        "Address3",
+                        "Address4",
+                        "Address5",
+                        "PostCode",
+                        "AlternativePostCode",
+                        "Longitude",
+                        "Latitude",
+                        "EffectiveFrom",
+                        "EffectiveTo",
+                        "LastModifiedDate",
+                        "LastModifiedTouchpointId"});
+            table9.AddRow(new string[] {
+                        "",
+                        "6 Lake Street",
+                        "North Walsham",
+                        "",
+                        "",
+                        "",
+                        "B44 9UX",
+                        "EC2P 2AG",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "2019-01-23T00:00:00Z",
+                        "90000001"});
+            table9.AddRow(new string[] {
+                        "Contact",
+                        "PreferredContactMethod",
+                        "MobileNumber",
+                        "HomeNumber",
+                        "AlternativeNumber",
+                        "EmailAddress",
+                        "LastModifiedDate",
+                        "LastModifiedTouchpointId",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table9.AddRow(new string[] {
+                        "",
+                        "4",
+                        "07484503700",
+                        "05100924950",
+                        "08483057675",
+                        "email2@domain2.test",
+                        "2019-01-23T00:00:00Z",
+                        "90000001",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""});
+#line 53
+ testRunner.Given("I load test customer data for this feature:", ((string)(null)), table9, "Given ");
 #line hidden
         }
         
@@ -169,54 +404,54 @@ namespace NCS.DSS.Collections.SysIntTests.Features
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Synonym name search for Aaron", null, new string[] {
                         "mytag"});
-#line 19
+#line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table4.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "GivenName",
                         "erin"});
-            table4.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "FamilyName",
                         "O\'Connors"});
-#line 20
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table4, "Given ");
+#line 68
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table10, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "FilterTerm",
                         "Value"});
-            table5.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "DateofBirth",
                         "eq 1953-02-13T00:00:00Z"});
-#line 24
- testRunner.And("I filter the results as follows", ((string)(null)), table5, "And ");
-#line 27
+#line 72
+ testRunner.And("I filter the results as follows", ((string)(null)), table11, "And ");
+#line 75
  testRunner.When("I submit the search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
+#line 76
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Value1",
                         "Value2"});
-            table6.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Aaron",
                         "Erin"});
-#line 29
- testRunner.And("the response should include \"GivenName\" matches for:", ((string)(null)), table6, "And ");
+#line 77
+ testRunner.And("the response should include \"GivenName\" matches for:", ((string)(null)), table12, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "FieldName",
                         "Value"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "DateofBirth",
                         "1953-02-13T00:00:00Z"});
-#line 32
- testRunner.And("the response should include results for:", ((string)(null)), table7, "And ");
+#line 80
+ testRunner.And("the response should include results for:", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -226,39 +461,39 @@ this.FeatureBackground();
         public virtual void SynonymNameSearchForRonnie()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Synonym name search for Ronnie", null, ((string[])(null)));
-#line 36
+#line 84
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "GivenName",
                         "Ronnie"});
-#line 37
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table8, "Given ");
-#line 40
+#line 85
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table14, "Given ");
+#line 88
  testRunner.When("I submit the search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
+#line 89
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Value1",
                         "Value2",
                         "Value3",
                         "Value4",
                         "Value5"});
-            table9.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Aaron",
                         "Ron",
                         "Veronica",
                         "Cameron",
                         "RONALD"});
-#line 42
- testRunner.And("the response should include \"GivenName\" matches for:", ((string)(null)), table9, "And ");
+#line 90
+ testRunner.And("the response should include \"GivenName\" matches for:", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -268,7 +503,7 @@ this.FeatureBackground();
         public virtual void SearchWithOR()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search with OR", null, ((string[])(null)));
-#line 46
+#line 94
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
@@ -282,7 +517,7 @@ this.FeatureBackground();
         public virtual void SearchWithAND()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search with AND", null, ((string[])(null)));
-#line 48
+#line 96
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
@@ -296,61 +531,61 @@ this.FeatureBackground();
         public virtual void RestrictSearchResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Restrict search results", null, ((string[])(null)));
-#line 50
+#line 98
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table10.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "FamilyName",
                         "SM*"});
-#line 51
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table10, "Given ");
+#line 99
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table16, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field1",
                         "Field2",
                         "Field3",
                         "Field4"});
-            table11.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "CustomerId",
                         "GivenName",
                         "FamilyName",
                         "DateofBirth"});
-#line 54
- testRunner.And("I restrict the returned fields to", ((string)(null)), table11, "And ");
+#line 102
+ testRunner.And("I restrict the returned fields to", ((string)(null)), table17, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "FilterTerm",
                         "Value"});
-            table12.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "DateofBirth",
                         "DateofBirth gt 1970-01-01"});
-#line 57
- testRunner.And("I filter the results as follows", ((string)(null)), table12, "And ");
-#line 60
+#line 105
+ testRunner.And("I filter the results as follows", ((string)(null)), table18, "And ");
+#line 108
  testRunner.When("I submit the search", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 61
+#line 109
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field1",
                         "Field2",
                         "Field3",
                         "Field4"});
-            table13.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "CustomerId",
                         "GivenName",
                         "FamilyName",
                         "DateofBirth"});
-#line 62
- testRunner.And("The response includes values for", ((string)(null)), table13, "And ");
+#line 110
+ testRunner.And("The response includes values for", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field1",
                         "Field2",
                         "Field3",
@@ -362,7 +597,7 @@ this.FeatureBackground();
                         "Field9",
                         "Field10",
                         "Field11"});
-            table14.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "DateOfRegistration",
                         "Title",
                         "UniqueLearnerNumber",
@@ -374,8 +609,8 @@ this.FeatureBackground();
                         "IntroducedByAdditionalInfo",
                         "LastModifiedDate",
                         "LastModifiedTouchpointID"});
-#line 65
- testRunner.And("The response includes no values for", ((string)(null)), table14, "And ");
+#line 113
+ testRunner.And("The response includes no values for", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -385,29 +620,29 @@ this.FeatureBackground();
         public virtual void View1StPageOfPaginatedResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View 1st page of paginated results", null, ((string[])(null)));
-#line 70
+#line 118
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table15.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "FamilyName",
                         "SM*"});
-#line 71
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table15, "Given ");
-#line 74
+#line 119
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table21, "Given ");
+#line 122
     testRunner.And("I request a count of records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 123
  testRunner.And("I request a page limit of 10 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 124
  testRunner.When("I request page 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 77
+#line 125
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 78
+#line 126
  testRunner.And("the number of records returned should be 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -418,35 +653,35 @@ this.FeatureBackground();
         public virtual void View2NdPageOfPaginatedResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View 2nd page of paginated results", null, ((string[])(null)));
-#line 80
+#line 128
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table16.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "FamilyName",
                         "SM*"});
-#line 81
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table16, "Given ");
-#line 84
+#line 129
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table22, "Given ");
+#line 132
     testRunner.And("I request a count of records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 133
  testRunner.And("I request a page limit of 10 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 134
  testRunner.And("I request page 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 135
  testRunner.And("I remember the records returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 136
  testRunner.When("I request page 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 89
+#line 137
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 90
+#line 138
  testRunner.And("the number of records returned should be 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 139
  testRunner.And("the records should not include the ealier results", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -457,39 +692,39 @@ this.FeatureBackground();
         public virtual void ViewLastPageOfPaginatedResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View last page of paginated results", null, ((string[])(null)));
-#line 93
+#line 141
  this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "SearchTerm",
                         "Value"});
-            table17.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "FamilyName",
                         "SM*"});
-#line 94
- testRunner.Given("I enter a search with the following terms", ((string)(null)), table17, "Given ");
-#line 97
+#line 142
+ testRunner.Given("I enter a search with the following terms", ((string)(null)), table23, "Given ");
+#line 145
     testRunner.And("I request a count of records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 146
  testRunner.And("I request a page limit of 10 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 147
  testRunner.And("I request page 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 148
  testRunner.And("I remember the records returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 149
  testRunner.And("I request page 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 150
  testRunner.And("I remember the records returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 151
  testRunner.When("I request the last page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 152
  testRunner.Then("there should be a 200 response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
+#line 153
  testRunner.Then("the remainder of the results are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 106
+#line 154
  testRunner.And("the records should not include the ealier results", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -500,7 +735,7 @@ this.FeatureBackground();
         public virtual void FilterByDOB()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filter by DOB", null, ((string[])(null)));
-#line 109
+#line 157
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 3

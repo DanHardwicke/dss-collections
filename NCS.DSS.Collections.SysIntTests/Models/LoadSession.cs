@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace NCS.DSS.Collections.SysIntTests.Models
 {
-    class LoadContact : Contact, ILoader
+    class LoadSession : Session, ILoader
     {
         public string LoaderRef { get; set; }
         public string ParentRef { get; set; }
+        public string InteractionRef { get; set; }
     }
 }

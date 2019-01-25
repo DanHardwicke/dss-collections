@@ -18,9 +18,9 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
     class DataLoadHelper<T> where T : ILoader
     {
         private EnvironmentSettings envSettings = new EnvironmentSettings();
-        private readonly List<Loader> LoaderData = new List<Loader>();
+        //private readonly List<Loader> LoaderData = new List<Loader>();
 
-        public List<Loader> ProcessDataTable (Table data, List<Loader> list, string path, string token = "")//, string parentToken = "")
+      /*  public List<Loader> ProcessDataTable (Table data, List<Loader> list, string path, string parentToken = "")//, string parentToken = "")
         // if parentToken is set, try to insert this into the supplied. path
         // if parentToken is set, try to extract related reference from LoaderData
         // if parentToken not set, extract the token from the response and store it
@@ -31,7 +31,7 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
             {
                // List<Loader> matchedList = new List<Loader>();
                 string parentId = "";
-                if (token.Length > 0)
+                if (parentToken.Length > 0)
                 {
                     // find 
                     //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
@@ -49,13 +49,13 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
                 json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
 
                 //string lookupValue = parentToken;
-                var pathToUse = (token.Length > 0 ? path.Replace(token, parentId) : path);
+                var pathToUse = (parentToken.Length > 0 ? path.Replace(parentToken, parentId) : path);
 
                 var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
 
                 response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-                if (token.Length.Equals(0) )
+                if (parentToken.Length.Equals(0) )
                 {
                     // store returned customer ID with loader reference
                     LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
@@ -64,6 +64,132 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
 
             return LoaderData;
         }
+        */
+
+
+        public List<Loader> ProcessDataTable(Table data, List<Loader> existingList, string path, string ParentType, string tokenToStore = "")
+        {
+            var collection = data.CreateSet<T>();
+            List<Loader> localList = new List<Loader>();
+
+            foreach (T item in collection)
+            {
+                Loader newLoad = new Loader();// ("", "");
+                var pathToUse = path;
+                //if a parent name is supplied want to look up the parent ID in the list of loader items (list) 
+                if (ParentType != String.Empty)
+                {
+                    int count = 0;
+                    foreach ( var l in existingList.Where( x => x.LoaderReference == item.LoaderRef && x.ParentType == ParentType))
+                    {
+                        count++;
+                        if ( count == Convert.ToInt32( (string.IsNullOrEmpty(item.ParentRef) ? "1" : item.ParentRef) ))
+                        {
+                            //clone the dictionary into the new loader item newLoad
+                            newLoad.AllParents.AddRange(l.AllParents);
+                            
+                            // increment newLoader order?? leave for now (don't know what max is and ordering is probably guaranteed by the list
+                        }
+                    }
+                    newLoad.AllParents.Count.Should().BeGreaterThan(0);
+
+                    //use the dictionary in the new loader item to replace the tokens in the supplied path
+
+                    foreach (var refIndex in newLoad.AllParents)
+                    {
+                        pathToUse = pathToUse.Replace(refIndex.Key, refIndex.Value);
+
+                    }
+
+                }
+
+                // prep request json
+                string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
+
+                // don't want to send internal reference
+                json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
+                json = JsonHelper.RemovePropertyFromJsonString(json, "ParentRef");
+
+
+                //submit the request
+                var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
+
+                response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
+                var idToStore = JsonHelper.GetPropertyFromJsonString(response.Content, tokenToStore);
+
+                // capture the json element in the response json and add it to the dictionary in newLoad item
+                newLoad.AllParents.Add(new FamilyTreeItem(tokenToStore, idToStore));
+
+                // set the direct parent IT in newLoad item
+                newLoad.ParentType = tokenToStore;
+                newLoad.ParentId = idToStore;
+                newLoad.LoaderReference = item.LoaderRef;
+
+                // add the new loader item to the list
+                localList.Add(newLoad);
+            }
+          
+
+            return localList;
+        }
+ /*       public List<Loader> ProcessDataTableWIP(Table data, List<Loader> list, string path, string[] tokenPath, string tokenToStore = "")
+        // if parentToken is set, try to insert this into the supplied. path
+        // if parentToken is set, try to extract related reference from LoaderData
+        // if parentToken not set, extract the token from the response and store it
+        {
+            var collection = data.CreateSet<T>();
+
+            foreach (T item in collection)
+            {
+                // List<Loader> matchedList = new List<Loader>();
+                string parentId = "";
+                List<string> tokenValues = new List<string>();
+
+                foreach (var token in tokenPath)
+                {
+
+                }
+                if (tokenPath.Count() > 0)
+                {
+                    // find 
+                    //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
+                    var matchedList = list.Where(x => x.LoaderReference == item.LoaderRef);
+                    parentId = matchedList.First().CustomerID;
+                    parentId.Should().NotBeNullOrEmpty();
+                    item.CustomerId = parentId;
+                }
+
+
+                // submit customer
+                string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
+
+                // don't want to send internal reference
+                json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
+
+                //string lookupValue = parentToken;
+                string pathToUse = path;
+                foreach (var token in parentToken)//.Select(( value, index) => new { value, index }))
+                {
+                    //pathToUse = pathToUse.Replace(token.value.Key, token.value.Value);
+                    pathToUse = pathToUse.Replace(token.Key, token.Value);
+                }
+                
+                var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
+
+                response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
+                // does an item exist for this loader ref?
+
+                if (parentToken.Count.Equals(0))
+                {
+                    // store returned customer ID with loader reference
+                    LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
+                }
+            }
+
+            return LoaderData;
+        }*/
 
         public static Table ReplaceTokensInTable(Table table)
         {

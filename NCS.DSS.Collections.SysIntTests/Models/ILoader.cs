@@ -9,6 +9,9 @@ namespace NCS.DSS.Collections.SysIntTests.Models
     interface ILoader
     {
         string LoaderRef { get; set; }
-        string CustomerId { get; set; }
+        //string CustomerId { get; set; }
+        string ParentRef { get; set; }
+       // string InteractionRef { get; set; }
+        //Dictionary<string, string> ParentIds { get; set; }
     }
 }
