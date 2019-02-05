@@ -500,7 +500,7 @@ this.FeatureBackground();
                         "Value"});
             table19.AddRow(new string[] {
                         "DateofBirth",
-                        "DateofBirth gt 1970-01-01"});
+                        "gt 1970-01-01"});
 #line 104
  testRunner.And("I filter the results as follows", ((string)(null)), table19, "And ");
 #line 107
@@ -662,20 +662,6 @@ this.FeatureBackground();
  testRunner.Then("the remainder of the results are returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 153
  testRunner.And("the records should not include the ealier results", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Filter by DOB")]
-        public virtual void FilterByDOB()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filter by DOB", null, ((string[])(null)));
-#line 156
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 3
-this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }

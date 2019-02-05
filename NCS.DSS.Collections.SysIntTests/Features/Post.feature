@@ -21,7 +21,7 @@ Feature: Post
 	| SESSION_NOW                | 9000000001 | 4     | Dorren            | Smithe     | Today -21Y      | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
 	| SESSION_HAS_FUTURE_DATE    | 9000000001 | 4     | Denis             | Smithe     | Today -21Y      | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
 	| MULTIPLE_SESSIONS_THIS_YR  | 9000000001 | 4     | Denis             | Smithe     | Today -21Y      | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
-	| MULTIPLE_SESSIONS_HISTORIC | 9000000001 | 4     | Denis             | Smithe     | Today -21Y      | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |  |
+	| MULTIPLE_SESSIONS_HISTORIC | 9000000001 | 4     | Denis             | Smithe     | Today -21Y      | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z | 
 
 
 	#Given I load a valid address data for each test customer
@@ -94,7 +94,7 @@ Feature: Post
 	Given I load action data for the feature
 	#Parent for ACTION is ACTION PLAN
 	| LoaderRef | ParentRef | DateActionAgreed     | DateActionAimsToBeCompletedBy | ActionSummary    | SignpostedTo | ActionType | ActionStatus | PersonResponsible | LastModifiedDate     |
-	| 18TMRW       | 1         | 2018-07-30T09:00:00Z | 2018-08-08T09:00:00Z          | Details of stuff | Someone      | 1          | 1            | 1                 | 2018-07-30T09:00:00Z |
+	| 18TMRW    | 1         | 2018-07-30T09:00:00Z | 2018-08-08T09:00:00Z          | Details of stuff | Someone      | 1          | 1            | 1                 | 2018-07-30T09:00:00Z |
 
 	Given I load outcome data for the feature
 	#Parent for OUTCOME is ACTION PLAN

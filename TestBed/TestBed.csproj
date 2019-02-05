@@ -42,6 +42,7 @@
     <Reference Include="Microsoft.Azure.Documents.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.DocumentDB.2.2.1\lib\net461\Microsoft.Azure.Documents.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Configuration, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
@@ -105,6 +106,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentDBRepository.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +116,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NCS.DSS.Collections.SysIntTests\NCS.DSS.Collections.SysIntTests.csproj">
+      <Project>{0fa65e75-78f9-40fa-89a5-b533cbb26901}</Project>
+      <Name>NCS.DSS.Collections.SysIntTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NCS.DSS.TestHelperLibrary\NCS.DSS.TestHelperLibrary.csproj">
       <Project>{79a2b9dc-c6f0-407f-a3a9-08515b9914fb}</Project>
       <Name>NCS.DSS.TestHelperLibrary</Name>

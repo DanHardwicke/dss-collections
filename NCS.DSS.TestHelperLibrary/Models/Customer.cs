@@ -2,9 +2,9 @@
 using System.Xml.Serialization;
 using System.Linq;
 
-namespace NCS.DSS.Collections.SysIntTests.Models
+namespace NCS.DSS.TestHelperLibrary.Models
 {
-    class Customer
+    public class Customer
     {
         public string CustomerID { get; set; }
         public string DateOfRegistration { get; set; }

@@ -34,6 +34,7 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
         {
             List<Loader> testData = (List<Loader>)scenarioContext["SearchTestData"];
             SQLServerHelper sqlHelper = new SQLServerHelper();
+            CosmosHelper.Initialise(envSettings.CosmosEndPoint, envSettings.CosmosAccountKey);
             sqlHelper.SetConnection(envSettings.SqlConnectionString);
             // loop through the data load list and check each is now in the SQL server data store
             foreach (var item in testData)
@@ -45,6 +46,9 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
                     var result = sqlHelper.DeleteRecord(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId);
                     result.Should().BeTrue("Because otherwise a record was not deleted");
                 }
+
+                // ?? does change feed send deletes?
+                CosmosHelper.DeleteDocument(constants.CollectionNameFromId(item.ParentType), constants.BackupTableNameFromId(item.ParentType), item.ParentId);
 
             }
             sqlHelper.CloseConnection();

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NCS.DSS.Collections.SysIntTests.Models
 {
-    class Customer
+    public class Customer
     {
         public string CustomerID { get; set; }
         public string DateOfRegistration { get; set; }

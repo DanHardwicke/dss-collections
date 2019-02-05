@@ -28,81 +28,18 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
             TimestampString = "";
             foreach ( var bit in tmp)
             {
-                TimestampString += "ABSDEFGHIJKL".Substring(Convert.ToInt32(bit.ToString()),1); 
+                TimestampString += "ABCDEFGHIJKL".Substring(Convert.ToInt32(bit.ToString()),1); 
 
 
             }
 
         }
 
-        //private readonly List<Loader> LoaderData = new List<Loader>();
-
-        /*  public List<Loader> ProcessDataTable (Table data, List<Loader> list, string path, string parentToken = "")//, string parentToken = "")
-          // if parentToken is set, try to insert this into the supplied. path
-          // if parentToken is set, try to extract related reference from LoaderData
-          // if parentToken not set, extract the token from the response and store it
-          {
-              var collection = data.CreateSet<T>();
-
-              foreach (T item in collection)
-              {
-                 // List<Loader> matchedList = new List<Loader>();
-                  string parentId = "";
-                  if (parentToken.Length > 0)
-                  {
-                      // find 
-                      //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
-                      var matchedList = list.Where(x => x.LoaderReference == item.LoaderRef);
-                      parentId = matchedList.First().CustomerID;
-                      parentId.Should().NotBeNullOrEmpty();
-                      item.CustomerId = parentId;
-                  }
-
-
-                  // submit customer
-                  string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
-
-                  // don't want to send internal reference
-                  json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
-
-                  //string lookupValue = parentToken;
-                  var pathToUse = (parentToken.Length > 0 ? path.Replace(parentToken, parentId) : path);
-
-                  var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
-
-                  response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
-
-                  if (parentToken.Length.Equals(0) )
-                  {
-                      // store returned customer ID with loader reference
-                      LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
-                  }
-              }
-
-              return LoaderData;
-          }
-          */
-
-        /*     public string getBackupTableNane( string primaryKey )
-             {
-                 string returnVal;
-                 switch (primaryKey)
-                 {
-                     case constants.AddressId:
-                         returnVal = "dss-Addresses";
-                         break;
-                     default:
-                         returnVal = "dss-" + primaryKey.Substring(0, primaryKey.Length - 2) + "s";
-                         break;
-
-                 }
-                 return returnVal;
-
-             }*/
-
+      
         public List<Loader> ProcessDataTable(Table data, List<Loader> existingList, string path, string ParentType, string tokenToStore = "")
         {
-            var collection = data.CreateSet<T>();
+            Table updatedData = ReplaceTokensInTable(data);
+            var collection = updatedData.CreateSet<T>();
             List<Loader> localList = new List<Loader>();
             SQLServerHelper sqlHelper = new SQLServerHelper();
             sqlHelper.SetConnection(envSettings.SqlConnectionString);
@@ -188,63 +125,6 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
             sqlHelper.CloseConnection();
             return localList;
         }
- /*       public List<Loader> ProcessDataTableWIP(Table data, List<Loader> list, string path, string[] tokenPath, string tokenToStore = "")
-        // if parentToken is set, try to insert this into the supplied. path
-        // if parentToken is set, try to extract related reference from LoaderData
-        // if parentToken not set, extract the token from the response and store it
-        {
-            var collection = data.CreateSet<T>();
-
-            foreach (T item in collection)
-            {
-                // List<Loader> matchedList = new List<Loader>();
-                string parentId = "";
-                List<string> tokenValues = new List<string>();
-
-                foreach (var token in tokenPath)
-                {
-
-                }
-                if (tokenPath.Count() > 0)
-                {
-                    // find 
-                    //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
-                    var matchedList = list.Where(x => x.LoaderReference == item.LoaderRef);
-                    parentId = matchedList.First().CustomerID;
-                    parentId.Should().NotBeNullOrEmpty();
-                    item.CustomerId = parentId;
-                }
-
-
-                // submit customer
-                string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
-
-                // don't want to send internal reference
-                json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
-
-                //string lookupValue = parentToken;
-                string pathToUse = path;
-                foreach (var token in parentToken)//.Select(( value, index) => new { value, index }))
-                {
-                    //pathToUse = pathToUse.Replace(token.value.Key, token.value.Value);
-                    pathToUse = pathToUse.Replace(token.Key, token.Value);
-                }
-                
-                var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
-
-                response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
-
-                // does an item exist for this loader ref?
-
-                if (parentToken.Count.Equals(0))
-                {
-                    // store returned customer ID with loader reference
-                    LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
-                }
-            }
-
-            return LoaderData;
-        }*/
 
         public static Table ReplaceTokensInTable(Table table)
         {

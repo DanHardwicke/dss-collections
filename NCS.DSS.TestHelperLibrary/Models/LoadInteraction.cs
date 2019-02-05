@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NCS.DSS.Collections.SysIntTests.Models
-{
+namespace NCS.DSS.TestHelperLibrary.Models
+{ 
     class LoadInteraction : Interaction, ILoader
     {
         public string LoaderRef { get; set; }

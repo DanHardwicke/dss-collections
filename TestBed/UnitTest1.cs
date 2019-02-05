@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NCS.DSS.TestHelperLibrary.Helpers;
+using NCS.DSS.Collections.SysIntTests.Models;
+//using NCS.DSS.TestHelperLibrary.Models;
+
+
+
 namespace TestBed
 {
     public class FamilyTreeItem
@@ -51,15 +56,54 @@ namespace TestBed
 
              sqlInstance.InsertRecordFromJson("dbo-diversitydetails", "{ \"id\": \"5e89e22c-8195-4daa-871f-7b36618673c3\",    \"CustomerId\": \"3c1b94e9-ef46-4098-bc0e-2e9f82c0e462\",    \"ConsentToCollectLLDDHealth\": true,    \"LearningDifficultyOrDisabilityDeclaration\": 1} ");
         }
-
+    
         [TestMethod]
-        public void ComsmosTest()
+        public void CosmosTest()
         {
-            CosmosHelper h = new CosmosHelper();
-            h.DeleteDocument("1", "2").GetAwaiter();
-                
+            /*    CosmosHelper h = new CosmosHelper();
+                h.BaseUrl = 
+                h.AutorizationKey = @"hbCu1uQMgFA8JzZ25afJj2r43X6CPzPHmpkA6yokoedvCVFj3D6iXyHTFa0l9W8WJudYW7xFvFT5JUZf9XJnow==";
+                h.DeleteDocument("customers", "customers", "4a30dcb6-c27c-4626-8dcc-d1f9f61685cf");
+    */
+     //       CosmosHelper.Initialise("
+     //       CosmosHelper.DeleteDocument("customers", "customers", "3c1b94e9-ef46-4098-bc0e-2e9f82c0e462");
+
+            CosmosHelper.Initialise("/", @"");
+            CosmosHelper.DeleteDocument("customers", "customers", "3c1b94e9-ef46-4098-bc0e-2e9f82c0e462");
+
+
         }
 
+        [TestMethod]
+        public void ComsmosTestQuickStartITEM()
+        {
+            DocumentDBRepository<Models.Item>.Initialize();
+
+            Models.Item item = new Models.Item();
+            item.Name = "From test";
+            item.Description = "To the db";
+            DocumentDBRepository<Models.Item>.CreateItemAsync(item).GetAwaiter().GetResult();
+            
+            //await DocumentDBRepository<Item>.CreateItemAsync(item);
+            //DocumentDBRepository<Models.Item>.CreateItemAsync(item).GetAwaiter();
+
+        }
+
+        [TestMethod]
+        public void ComsmosTestQuickStartAsync()
+        {
+            DocumentDBRepository<NCS.DSS.Collections.SysIntTests.Models.Customer>.Initialize();
+
+            NCS.DSS.Collections.SysIntTests.Models.Customer customer = new Customer();
+            customer.DateofBirth = "12/12/1971";
+            customer.FamilyName = "Jones";
+            //await DocumentDBRepository<Item>.CreateItemAsync(item);
+            dynamic a =  DocumentDBRepository<NCS.DSS.Collections.SysIntTests.Models.Customer>.CreateItemAsync(customer).GetAwaiter().GetResult();
+
+            DocumentDBRepository<NCS.DSS.Collections.SysIntTests.Models.Customer>.DeleteItemAsync(a.Id).GetAwaiter().GetResult();
+            DocumentDBRepository<NCS.DSS.Collections.SysIntTests.Models.Customer>.DeleteItemAsync("f72c07d6-e3a6-4dc2-9e62-2e91f09e484e").GetAwaiter().GetResult();
+
+        }
         [TestMethod]
         public void TestMethod1()
         {

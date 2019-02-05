@@ -329,8 +329,8 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 return;
             }
             DataLoadHelper<LoadCustomer> dataLoadHelper = new DataLoadHelper<LoadCustomer>();
-            Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
-            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, constants.CustomersPath ,string.Empty, constants.CustomerId);
+            //Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.CustomersPath ,string.Empty, constants.CustomerId);
             LoaderData.AddRange(list);
         }
 
@@ -396,7 +396,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 return;
             }
             DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionPlansPath, constants.InteractionId, constants.ActionPlanId );
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionPlansPathV2, constants.SessionId, constants.ActionPlanId );
             LoaderData.AddRange(list);
             }
 
@@ -410,7 +410,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadAction> dataLoadHelper = new DataLoadHelper<LoadAction>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionsPath, constants.ActionPlanId, constants.ActionId);
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionsPathV2, constants.ActionPlanId, constants.ActionId);
             LoaderData.AddRange(list);
 
         }
@@ -425,7 +425,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadOutcome> dataLoadHelper = new DataLoadHelper<LoadOutcome>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.OutcomesPath, constants.ActionPlanId, constants.OutcomeId);
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.OutcomesPathV2, constants.ActionPlanId, constants.OutcomeId);
             LoaderData.AddRange(list);
         }
 

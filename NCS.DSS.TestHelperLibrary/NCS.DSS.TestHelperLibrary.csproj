@@ -105,26 +105,6 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Helpers\CosmosHelper.cs" />
     <Compile Include="Helpers\SQLServerHelper.cs" />
-    <Compile Include="Models\Action.cs" />
-    <Compile Include="Models\ActionPlan.cs" />
-    <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\Contact.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\FamilyTreeItem.cs" />
-    <Compile Include="Models\ILoader.cs" />
-    <Compile Include="Models\Interaction.cs" />
-    <Compile Include="Models\LoadAction.cs" />
-    <Compile Include="Models\LoadActionPlan.cs" />
-    <Compile Include="Models\LoadAddress.cs" />
-    <Compile Include="Models\LoadContact.cs" />
-    <Compile Include="Models\LoadCustomer.cs" />
-    <Compile Include="Models\Loader.cs" />
-    <Compile Include="Models\LoadInteraction.cs" />
-    <Compile Include="Models\LoadOutcome.cs" />
-    <Compile Include="Models\LoadSession.cs" />
-    <Compile Include="Models\Outcome.cs" />
-    <Compile Include="Models\SearchResponse.cs" />
-    <Compile Include="Models\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

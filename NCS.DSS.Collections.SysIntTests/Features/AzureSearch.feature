@@ -103,7 +103,7 @@ Scenario: Restrict search results
 	| CustomerId | GivenName | FamilyName | DateofBirth |
 	And I filter the results as follows
 	| FilterTerm  | Value                     |
-	| DateofBirth | DateofBirth gt 1970-01-01 |
+	| DateofBirth | gt 1970-01-01 |
 	When I submit the search
 	Then there should be a 200 response
 	And The response includes values for
@@ -153,7 +153,7 @@ Scenario: View 1st page of paginated results
 	And the records should not include the ealier results
 
 
-Scenario: Filter by DOB
+#Scenario: Filter by DOB
 
 #Scenario: 
 
