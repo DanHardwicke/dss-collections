@@ -8,6 +8,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NCS.DSS.Collections.SysIntTests.Helpers;
+using NCS.DSS.TestHelperLibrary.Helpers;
 using NCS.DSS.Collections.SysIntTests.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -18,59 +19,94 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
     class DataLoadHelper<T> where T : ILoader
     {
         private EnvironmentSettings envSettings = new EnvironmentSettings();
-        //private readonly List<Loader> LoaderData = new List<Loader>();
+        private static string TimestampString;// = DateTime.Now.ToString("yyMMddHHMMss");
+        public bool LoadToBackupStore { get; set; } = true;
 
-      /*  public List<Loader> ProcessDataTable (Table data, List<Loader> list, string path, string parentToken = "")//, string parentToken = "")
-        // if parentToken is set, try to insert this into the supplied. path
-        // if parentToken is set, try to extract related reference from LoaderData
-        // if parentToken not set, extract the token from the response and store it
+        public DataLoadHelper()
         {
-            var collection = data.CreateSet<T>();
-            
-            foreach (T item in collection)
+            string tmp = DateTime.Now.ToString("yyMMddHHMMss");
+            TimestampString = "";
+            foreach ( var bit in tmp)
             {
-               // List<Loader> matchedList = new List<Loader>();
-                string parentId = "";
-                if (parentToken.Length > 0)
-                {
-                    // find 
-                    //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
-                    var matchedList = list.Where(x => x.LoaderReference == item.LoaderRef);
-                    parentId = matchedList.First().CustomerID;
-                    parentId.Should().NotBeNullOrEmpty();
-                    item.CustomerId = parentId;
-                }
+                TimestampString += "ABSDEFGHIJKL".Substring(Convert.ToInt32(bit.ToString()),1); 
 
 
-                // submit customer
-                string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
-
-                // don't want to send internal reference
-                json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
-
-                //string lookupValue = parentToken;
-                var pathToUse = (parentToken.Length > 0 ? path.Replace(parentToken, parentId) : path);
-
-                var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
-
-                response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
-
-                if (parentToken.Length.Equals(0) )
-                {
-                    // store returned customer ID with loader reference
-                    LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
-                }
             }
 
-            return LoaderData;
         }
-        */
 
+        //private readonly List<Loader> LoaderData = new List<Loader>();
+
+        /*  public List<Loader> ProcessDataTable (Table data, List<Loader> list, string path, string parentToken = "")//, string parentToken = "")
+          // if parentToken is set, try to insert this into the supplied. path
+          // if parentToken is set, try to extract related reference from LoaderData
+          // if parentToken not set, extract the token from the response and store it
+          {
+              var collection = data.CreateSet<T>();
+
+              foreach (T item in collection)
+              {
+                 // List<Loader> matchedList = new List<Loader>();
+                  string parentId = "";
+                  if (parentToken.Length > 0)
+                  {
+                      // find 
+                      //matchedList.AddRange(LoaderData.Where(x => x.LoaderReference == item.LoaderRef).);
+                      var matchedList = list.Where(x => x.LoaderReference == item.LoaderRef);
+                      parentId = matchedList.First().CustomerID;
+                      parentId.Should().NotBeNullOrEmpty();
+                      item.CustomerId = parentId;
+                  }
+
+
+                  // submit customer
+                  string json = JsonConvert.SerializeObject(item, Formatting.Indented);//, settings);
+
+                  // don't want to send internal reference
+                  json = JsonHelper.RemovePropertyFromJsonString(json, "LoaderRef");
+
+                  //string lookupValue = parentToken;
+                  var pathToUse = (parentToken.Length > 0 ? path.Replace(parentToken, parentId) : path);
+
+                  var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
+
+                  response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
+                  if (parentToken.Length.Equals(0) )
+                  {
+                      // store returned customer ID with loader reference
+                      LoaderData.Add(new Loader(item.LoaderRef, JsonHelper.GetPropertyFromJsonString(response.Content, "CustomerId")));
+                  }
+              }
+
+              return LoaderData;
+          }
+          */
+
+        /*     public string getBackupTableNane( string primaryKey )
+             {
+                 string returnVal;
+                 switch (primaryKey)
+                 {
+                     case constants.AddressId:
+                         returnVal = "dss-Addresses";
+                         break;
+                     default:
+                         returnVal = "dss-" + primaryKey.Substring(0, primaryKey.Length - 2) + "s";
+                         break;
+
+                 }
+                 return returnVal;
+
+             }*/
 
         public List<Loader> ProcessDataTable(Table data, List<Loader> existingList, string path, string ParentType, string tokenToStore = "")
         {
             var collection = data.CreateSet<T>();
             List<Loader> localList = new List<Loader>();
+            SQLServerHelper sqlHelper = new SQLServerHelper();
+            sqlHelper.SetConnection(envSettings.SqlConnectionString);
+            sqlHelper.AddReplacementRule(tokenToStore, "id");
 
             foreach (T item in collection)
             {
@@ -113,8 +149,27 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
 
                 //submit the request
                 var response = RestHelper.Post(envSettings.BaseUrl + pathToUse, json, envSettings.TouchPointId, envSettings.SubscriptionKey);
-
                 response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
+                // do we want to push this to the data store?
+                newLoad.LoadedToSqlServer = false;
+                switch ( tokenToStore )
+                {
+                    case "CustomerId":
+                    case "OutcomeId":
+                    case "ActionPlanId":
+                        break;
+                    default:
+                        if (LoadToBackupStore)
+                        {
+                            sqlHelper.InsertRecordFromJson( constants.BackupTableNameFromId(tokenToStore) , response.Content);
+                            newLoad.LoadedToSqlServer = true;
+                        }
+                    break;
+                }
+
+
+               
 
                 var idToStore = JsonHelper.GetPropertyFromJsonString(response.Content, tokenToStore);
 
@@ -129,8 +184,8 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
                 // add the new loader item to the list
                 localList.Add(newLoad);
             }
-          
 
+            sqlHelper.CloseConnection();
             return localList;
         }
  /*       public List<Loader> ProcessDataTableWIP(Table data, List<Loader> list, string path, string[] tokenPath, string tokenToStore = "")
@@ -240,6 +295,10 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
                             newValue = extractedDateTime.ToString("yyyy-MM-dd" + (longDate ? "THH:mm:ssZ" : "T00:00:00Z"));
                         }
 
+                    }
+                    else if (value.Value.Contains("[FEATURE_TS]"))
+                    {
+                        newValue = value.Value.Replace("[FEATURE_TS]", TimestampString);
                     }
 
                     if (value.Key.Length > 0)

@@ -1,10 +1,10 @@
 ﻿Feature: AzureSearch
 
-Background:
+Background: Data setup
 	Given I load test customer data for this feature:
 	#Parent for ADDRESS in CUSTOMER
-	| LoaderRef | Title | GivenName | FamilyName | DateofBirth    | DateOfRegistration   | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
-	| BOB      | 4     | BOBRON     | O'Connors  | Today -18Y +1D | Now -3D              | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| LoaderRef | Title | GivenName | FamilyName          | DateofBirth    | DateOfRegistration | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
+	| BOB       | 4     | BOBRON    | Surname[FEATURE_TS] | Today -18Y +1D | Now -3D            | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
 
 	Given I load test address data for this feature:
 	#Parent for ADDRESS is CUSTOMER
@@ -43,6 +43,7 @@ Background:
 	| BOB       | 1         | 3           | 2018-07-20T21:45:00Z | 2018-07-20T21:45:00Z | 
 
 	Given I have completed loading data and don't want to repeat for each test
+	And I have confirmed all test data is now in the backup data store
 
 
 	## ineractions
@@ -50,18 +51,6 @@ Background:
 	## action plan
 	## etc
 
-	Given I load test customer data for this feature:
-	| Type     | F1                     | F2            | F3          | F4                | F5                  | F6                   | F7                       | F8                  | F9                | F10                  | F11          | F12                        | F13                      |
-	| Customer | Title                  | GivenName     | FamilyName  | DateofBirth       | DateOfRegistration  | UniqueLearnerNumber  | OptInUserResearch        | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate         |
-	|          | 4                      | AARON         | O'Connors   | Today -18Y +1D    | Now -3D             | 9999900001           | true                     | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z     |
-	| Address  | Address1               | Address2      | Address3    | Address4          | Address5            | PostCode             | AlternativePostCode      | Longitude           | Latitude          | EffectiveFrom        | EffectiveTo  | LastModifiedDate           | LastModifiedTouchpointId |
-	|          | 6 Lake Street          | North Walsham |             |                   |                     | B44 9UX              | EC2P 2AG                 |                     |                   |                      |              | 2019-01-23T00:00:00Z       | 90000001                 |
-	| Contact  | PreferredContactMethod | MobileNumber  | HomeNumber  | AlternativeNumber | EmailAddress        | LastModifiedDate     | LastModifiedTouchpointId |                     |                   |                      |              |                            |                          |  
-	|          | 4                      | 07484503700   | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |                     |                   |                      |              |                            |                          |  
-	## ineractions
-	## session
-	## action plan
-	## etc
 
 @mytag
 Scenario: Synonym name search for Aaron
@@ -85,6 +74,16 @@ Scenario: Synonym name search for Ronnie
 	Given I enter a search with the following terms
 	| SearchTerm | Value     |
 	| GivenName  | Ronnie    |
+	When I submit the search
+	Then there should be a 200 response
+	And the response should include "GivenName" matches for:
+	| Value1 | Value2 | Value3   | Value4  | Value5 |
+	| Aaron  | Ron    | Veronica | Cameron | RONALD |
+
+Scenario: Synonym name search for Peter
+	Given I enter a search with the following terms
+	| SearchTerm | Value     |
+	| GivenName  | Peter     |
 	When I submit the search
 	Then there should be a 200 response
 	And the response should include "GivenName" matches for:

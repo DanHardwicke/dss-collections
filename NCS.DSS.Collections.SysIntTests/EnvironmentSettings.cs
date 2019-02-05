@@ -16,5 +16,6 @@ namespace NCS.DSS.Collections.SysIntTests
         public string SubscriptionKey => Configuration["RestService:SubscriptionKey"];
         public string CosmosEndPoint => Configuration["CosmosDB:EndPoint"];
         public string CosmosAccountKey => Configuration["CosmosDB:Key"];
+        public string SqlConnectionString => Configuration["SQLDataStore:ConnectionString"];
     }
 }

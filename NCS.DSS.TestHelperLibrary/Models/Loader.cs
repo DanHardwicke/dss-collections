@@ -26,8 +26,6 @@ namespace NCS.DSS.Collections.SysIntTests.Models
 
         public string ParentType { get; set; }
         public string ParentId { get; set; }
-        public bool LoadedToSqlServer { get; set; }
-
         public List<FamilyTreeItem> AllParents = new List<FamilyTreeItem>();
       //  public int order { get; set; }
 

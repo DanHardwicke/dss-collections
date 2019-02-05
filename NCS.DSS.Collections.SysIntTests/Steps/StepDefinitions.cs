@@ -9,6 +9,7 @@ using System.Net;
 using NCS.DSS.Collections.SysIntTests.Helpers;
 using NCS.DSS.Collections.SysIntTests.Models;
 using NCS.DSS.Collections.SysIntTests.Singletons;
+using NCS.DSS.TestHelperLibrary.Helpers;
 using RestSharp;
 using System.Text;
 using TechTalk.SpecFlow;
@@ -31,6 +32,13 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
         private SearchResponse SearchResults;
         private readonly List<Loader> LoaderData = new List<Loader>();
         internal static readonly AzureSearchSingleton CustomerDataLoad = AzureSearchSingleton.Instance;
+
+        private readonly ScenarioContext scenarioContext;
+
+        public StepDefinitions(ScenarioContext context)
+        {
+            scenarioContext = context;
+        }
 
 
         // For additional details on SpecFlow step definitions see http://go.specflow.org/doc-stepdef
@@ -145,36 +153,99 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             numericStatusCode.Should().Be(expectedResponseCode);
         }
 
+        private int AssertValueInCustomerList ( IEnumerable<Customer> list, string key, string value)
+        {
+            IEnumerable<Customer> tempList = list.Where<Customer>(item => item.GivenName.ToLower() == "");
+            switch (key)
+            {
+                case "GivenName":
+                    tempList = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == key.ToLower());
+                    break;
+                case "FamilyName":
+                    tempList = SearchResults.Results.Where<Customer>(item => item.FamilyName.ToLower() == key.ToLower());
+                    break;
+                case "DateofBirth":
+                    tempList = SearchResults.Results.Where<Customer>(item => item.DateofBirth.ToLower() == key.ToLower());
+                    break;
+                default:
+                    throw new Exception("The field: " + key + " is not supported");
+            }
+            tempList.Count().Should().BeGreaterThan(0, "because documents with " + key + " = " + value + " are expected in the response");
+
+            return tempList.Count();
+        }
+
+
         [Then(@"the response should include ""(.*)"" matches for:")]
         public void ThenTheResponseShouldIncludeMatchesFor(string p0, Table table)
         {
             //ictionary<string,string> dict = table.Rows.ToDictionary(r =>  r => r["Value"]);
-            int Tally = 0;
+            int tally = 0;
 
+         
             foreach (var text in table.Rows[0].Values)
             {
-                // first call to create the list (  haven't worked out how to do this more neatly yet )
-                var list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == "" /*&& TODO restrict by test tag*/);
-                switch (p0)
-                {
-                    case "GivenName":
-                        list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == text.ToLower());
-                        break;
-                    case "FamilyName":
-                        list = SearchResults.Results.Where<Customer>(item => item.FamilyName.ToLower() == text.ToLower());
-                        break;
-                    case "DateofBirth":
-                        list = SearchResults.Results.Where<Customer>(item => item.DateofBirth.ToLower() == text.ToLower());
-                        break;
-                    default:
-                        throw new Exception("The field: " + text + " is not supported");
-                }
-                // var list = SearchResults.value.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
-                list.Count().Should().BeGreaterThan(0);
-                Tally += list.Count();
-            }
-            Tally.Should().Be(SearchResults.Results.Count());
 
+                tally += AssertValueInCustomerList(SearchResults.Results, p0, text);
+
+                //// first call to create the list (  haven't worked out how to do this more neatly yet )
+                //var list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == "" /*&& TODO restrict by test tag*/);
+                //switch (p0)
+                //{
+                //    case "GivenName":
+                //        list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == text.ToLower());
+                //        break;
+                //    case "FamilyName":
+                //        list = SearchResults.Results.Where<Customer>(item => item.FamilyName.ToLower() == text.ToLower());
+                //        break;
+                //    case "DateofBirth":
+                //        list = SearchResults.Results.Where<Customer>(item => item.DateofBirth.ToLower() == text.ToLower());
+                //        break;
+                //    default:
+                //        throw new Exception("The field: " + text + " is not supported");
+                //}
+                //// var list = SearchResults.value.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
+                //list.Count().Should().BeGreaterThan(0);
+                //Tally += list.Count();
+            }
+            tally.Should().Be(SearchResults.Results.Count(),"Because otherwise documents where " + p0 + " does not match one of the specified values");
+
+        }
+
+
+        [Then(@"the response should include results for:")]
+        public void ThenTheResponseShouldIncludeResultsFor(Table table)
+        {
+            Dictionary<string, string> dict = table.Rows.ToDictionary(r => r["FieldName"], r => r["Value"]);
+            int tally = 0;
+            foreach (var testCondition in dict)
+            {
+
+                tally += AssertValueInCustomerList(SearchResults.Results, testCondition.Key, testCondition.Value);
+
+                //// first call to create the list (  haven't worked out how to do this more neatly yet )
+                //var list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == "");
+                //switch (testCondition.Key)
+                //{
+                //    case "GivenName":
+                //        list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
+                //        break;
+                //    case "FamilyName":
+                //        list = SearchResults.Results.Where<Customer>(item => item.FamilyName.ToLower() == testCondition.Value.ToLower());
+                //        break;
+                //    case "DateofBirth":
+                //        list = SearchResults.Results.Where<Customer>(item => item.DateofBirth.ToLower() == testCondition.Value.ToLower());
+                //        break;
+                //    default:
+                //        throw new Exception("The field: " + testCondition.Key + " is not supported");
+                //}
+                //// var list = SearchResults.value.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
+                //Console.WriteLine("Checking that " + testCondition.Key + ": " + testCondition.Value + " is inculded in the results");
+                //list.Count().Should().BeGreaterThan(0, "because documents with " + testCondition.Key + " = " + testCondition.Value + " are expected in the response");
+                //tally += list.Count();
+            }
+
+            tally.Should().Be(SearchResults.Results.Count(), "Because otherwise results have been returned that do not match those expected");
         }
 
         [Then(@"The response includes values for")]
@@ -227,55 +298,11 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
 
 
 
-        [Then(@"the response should include results for:")]
-        public void ThenTheResponseShouldIncludeResultsFor(Table table)
-        {
-            Dictionary<string, string> dict = table.Rows.ToDictionary(r => r["FieldName"], r => r["Value"]);
-            int tally = 0;
-             foreach ( var testCondition in dict)
-            {
-                var param = Expression.Parameter(typeof(Customer), "x");
-                /*var predicate = Expression.Lambda<Func<Customer, bool>>(
-                    Expression.Call(
-                        Expression.PropertyOrField(param, testCondition.Key),
-                        "Equals", null, Expression.Constant(testCondition.Value)
-                    ), param);
-                var projection = Expression.Lambda<Func<Customer, Tuple<int, string>>>(
-                    Expression.Call(typeof(Tuple), "Create", new[] { typeof(int), typeof(string) },
-                        Expression.PropertyOrField(param, "Id"),
-                        Expression.PropertyOrField(param, testCondition.Key)), param);
-                //var results = SearchResults.value.Where(predicate).Select(projection);*/
-                //System.Linq.Enumerable.
-
-                // first call to create the list (  haven't worked out how to do this more neatly yet )
-                var list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == "");
-                switch (testCondition.Key)
-                {
-                    case "GivenName":
-                        list = SearchResults.Results.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
-                        break;
-                    case "FamilyName":
-                        list = SearchResults.Results.Where<Customer>(item => item.FamilyName.ToLower() == testCondition.Value.ToLower());
-                        break;
-                    case "DateofBirth":
-                        list = SearchResults.Results.Where<Customer>(item => item.DateofBirth.ToLower() == testCondition.Value.ToLower());
-                        break;
-                    default:
-                        throw new Exception("The field: " + testCondition.Key  + " is not supported");
-                }
-                // var list = SearchResults.value.Where<Customer>(item => item.GivenName.ToLower() == testCondition.Value.ToLower());
-                Console.WriteLine("Checking that " + testCondition.Key + ": " + testCondition.Value + " is inculded in the results");
-                list.Count().Should().BeGreaterThan(0);
-                tally += list.Count();
-            }
-
-            tally.Should().Be(SearchResults.Results.Count());
-        }
 
         [Then(@"the number of records returned should be (.*)")]
         public void ThenTheNumberOfRecordsReturnedShouldBe(int p0)
         {
-            SearchResults.Results.Count().Should().Be(p0);
+            SearchResults.Results.Count().Should().Be(p0,"because this is the number of documents expected in the search");
         }
 
         [Then(@"the records should not include the ealier results")]
@@ -285,13 +312,13 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             var resultList = SearchResults.Results
                             .Select(s => s.CustomerID);
             bool matches = resultList.Any(x => PreviousResults.Any(y => y == x));
-            matches.Should().BeFalse();
+            matches.Should().BeFalse("because there shouldn't be any documents returned that were seen on an ealier page");
         }
 
         [Then(@"the remainder of the results are returned")]
         public void ThenTheRemainderOfTheResultsAreReturned()
         {
-            SearchResults.Results.Count().Should().Be(SearchResults.RecordCount - ( PageSize * ( NumberOfPages - 1 ) ));
+            SearchResults.Results.Count().Should().Be(SearchResults.RecordCount - ( PageSize * ( NumberOfPages - 1 ) ),"because pagination should return all remaining documents on the last page");
         }
 
         [Given(@"I load test customer data for this feature:")]
@@ -303,7 +330,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
             DataLoadHelper<LoadCustomer> dataLoadHelper = new DataLoadHelper<LoadCustomer>();
             Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
-            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, "/customers/api/customers/","","CustomerId");
+            var list = dataLoadHelper.ProcessDataTable(processedTable, LoaderData, constants.CustomersPath ,string.Empty, constants.CustomerId);
             LoaderData.AddRange(list);
         }
 
@@ -316,7 +343,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadAddress> dataLoadHelper = new DataLoadHelper<LoadAddress>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "addresses/api/Customers/CustomerId/addresses/", "CustomerId", "AddressId" );
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.AddressesPath, constants.CustomerId, constants.AddressId);
             LoaderData.AddRange(list);
 
         }
@@ -330,7 +357,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadContact> dataLoadHelper = new DataLoadHelper<LoadContact>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "contactdetails/api/Customers/CustomerId/contactdetails/", "CustomerId", "ContactId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ContactsPath,constants.CustomerId, constants.ContactId);
             LoaderData.AddRange(list);
 
         }
@@ -344,7 +371,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadInteraction> dataLoadHelper = new DataLoadHelper<LoadInteraction>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "interactions/api/Customers/CustomerId/Interactions/", "CustomerId", "InteractionId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.InteractionsPath, constants.CustomerId, constants.InteractionId);
             LoaderData.AddRange(list);
 
         }
@@ -357,7 +384,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 return;
             }
             DataLoadHelper<LoadSession> dataLoadHelper = new DataLoadHelper<LoadSession>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "sessions/api/Customers/CustomerId/Interactions/InteractionId/sessions/", "InteractionId", "SessionId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.SessionsPath, constants.InteractionId, constants.SessionId);
             LoaderData.AddRange(list);
         }
 
@@ -369,14 +396,9 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 return;
             }
             DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actionplans/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/", "InteractionId", "ActionPlanId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionPlansPath, constants.InteractionId, constants.ActionPlanId );
             LoaderData.AddRange(list);
-            /*
-                         DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actionplans/api/Customers/CustomerId/Interactions/InteractionId/Sessions/SessionId/ActionPlans/", "SessionId", "ActionPlanId");
-            LoaderData.AddRange(list);
-            */
-        }
+            }
 
 
         [Given(@"I load action data for the feature")]
@@ -388,7 +410,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadAction> dataLoadHelper = new DataLoadHelper<LoadAction>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "actions/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/ActionPlanId/actions/", "ActionPlanId", "ActionId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionsPath, constants.ActionPlanId, constants.ActionId);
             LoaderData.AddRange(list);
 
         }
@@ -403,10 +425,10 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
 
             DataLoadHelper<LoadOutcome> dataLoadHelper = new DataLoadHelper<LoadOutcome>();
-            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, "outcomes/api/Customers/CustomerId/Interactions/InteractionId/ActionPlans/ActionPlanId/outcomes/", "ActionPlanId", "OutcomeId");
+            var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.OutcomesPath, constants.ActionPlanId, constants.OutcomeId);
             LoaderData.AddRange(list);
-
         }
+
 
         [Given(@"I have completed loading data and don't want to repeat for each test")]
         public void GivenIHaveCompletedLoadingDataAndDonTWantToRepeatForEachTest()
@@ -420,11 +442,24 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             CustomerDataLoad.DataSetupExecuted = true;
         }
 
+        [Given(@"I have confirmed all test data is now in the backup data store")]
+        public void GivenIHaveConfirmedAllTestDataIsNowInTheBackupDataStore()
+        {
+            SQLServerHelper sqlHelper = new SQLServerHelper();
+            sqlHelper.SetConnection(envSettings.SqlConnectionString);
+            // loop through the data load list and check each is now in the SQL server data store
+            foreach ( var item in LoaderData)
+            {
+                if (item.LoadedToSqlServer) // temp measure until change feed has been delivered
+                {
+                    sqlHelper.AddReplacementRule(item.ParentType, "id");
+                //    sqlHelper.CheckRecordExists(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId).Should().BeTrue();
+                }
 
-
-      
-
-
+            }
+            sqlHelper.CloseConnection();
+            scenarioContext["SearchTestData"] = LoaderData;
+        }
 
     }
 }
