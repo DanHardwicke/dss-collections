@@ -4,12 +4,12 @@
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DFC.Common.Standard" Version="1.0.0" />
-    <PackageReference Include="DFC.Configuration" Version="1.0.0" />
-    <PackageReference Include="DFC.Functions.DI.Standard" Version="1.0.0" />
-    <PackageReference Include="DFC.HTTP.Standard" Version="1.0.0" />
-    <PackageReference Include="DFC.JSON.Standard" Version="1.0.0" />
-    <PackageReference Include="DFC.Swagger.Standard" Version="1.0.0" />
+    <PackageReference Include="DFC.Common.Standard" Version="0.1.0" />
+    <PackageReference Include="DFC.Configuration" Version="0.1.7" />
+    <PackageReference Include="DFC.Functions.DI.Standard" Version="0.1.0" />
+    <PackageReference Include="DFC.HTTP.Standard" Version="0.1.5" />
+    <PackageReference Include="DFC.JSON.Standard" Version="0.1.0" />
+    <PackageReference Include="DFC.Swagger.Standard" Version="0.1.3" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
   <ItemGroup>
