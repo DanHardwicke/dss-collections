@@ -44,7 +44,6 @@ namespace NCS.DSS.Collections.SysIntTests
 
             }
             return returnVal;
-
         }
 
         public static string BackupTableNameFromResource(string resource)
@@ -61,7 +60,6 @@ namespace NCS.DSS.Collections.SysIntTests
 
             }
             return returnVal;
-
         }
 
         public static string CollectionNameFromId(string resource)
@@ -73,9 +71,8 @@ namespace NCS.DSS.Collections.SysIntTests
                     returnVal = "addresses";
                     break;
                 default:
-                    returnVal = resource.Substring(1, resource.Length - 2) + "s";
+                    returnVal = resource.Substring(0, resource.Length - 2) + "s";
                     break;
-
             }
             return returnVal.ToLower();
 

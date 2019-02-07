@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace NCS.DSS.Collections.SysIntTests.Helpers 
 {
-    public static class JsonHelper
+    public static class Json1Helper
     {
         public static Boolean CheckJsonPropertyHasValue(string json, string property)
         {

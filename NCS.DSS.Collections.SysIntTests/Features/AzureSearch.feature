@@ -3,64 +3,49 @@
 Background: Data setup
 	Given I load test customer data for this feature:
 	#Parent for ADDRESS in CUSTOMER
-	| LoaderRef | Title | GivenName | FamilyName          | DateofBirth    | DateOfRegistration | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
-	| BOB       | 4     | BOBRON    | Surname[FEATURE_TS] | Today -18Y +1D | Now -3D            | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| LoaderRef | Title | GivenName | FamilyName          | DateofBirth | DateOfRegistration | UniqueLearnerNumber | OptInUserResearch | OptInMarketResearch | DateOfTermination | ReasonForTermination | IntroducedBy | IntroducedByAdditionalInfo | LastModifiedDate     |
+	| ERIN      | 4     | Erin      | Surname[FEATURE_TS] | Today -20Y  | Now -3D            | 9999900001          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| AARON     | 4     | Aaron     | Surname[FEATURE_TS] | Today -21Y  | Now -3D            | 9999900002          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| VERONICA  | 4     | Veronica  | Surname[FEATURE_TS] | Today -22Y  | Now -3D            | 9999900003          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| CAMERON   | 4     | Cameron   | Surname[FEATURE_TS] | Today -23Y  | Now -3D            | 9999900004          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| RONALD    | 4     | Ronald    | Surname[FEATURE_TS] | Today -24Y  | Now -3D            | 9999900005          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| RON       | 4     | Ron       | Surname[FEATURE_TS] | Today -25Y  | Now -3D            | 9999900006          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
+	| RONNIE    | 4     | Ronnie    | Surname[FEATURE_TS] | Today -26Y  | Now -3D            | 9999900007          | true              | false               |                   |                      | 1            | ZZ_TESTDATA_ANON           | 2019-01-17T00:00:00Z |
 
 	Given I load test address data for this feature:
 	#Parent for ADDRESS is CUSTOMER
 	| LoaderRef | Address1      | Address2      | Address3 | Address4 | Address5 | PostCode | AlternativePostCode | Longitude | Latitude | EffectiveFrom | EffectiveTo | LastModifiedDate     | LastModifiedTouchpointId |
-	| BOB       | 6 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| ERIN      | 1 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| AARON     | 2 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| VERONICA  | 3 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| CAMERON   | 4 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| RONALD    | 5 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| RON       | 6 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+	| RONNIE    | 7 Lake Street | North Walsham |          |          |          | B44 9UX  | EC2P 2AG            |           |          |               |             | 2019-01-23T00:00:00Z | 90000001                 |
+
 
 	 Given I load test contact data for this feature:
 	#Parent for CONTACT is CUSTOMER
 	| LoaderRef | PreferredContactMethod | MobileNumber | HomeNumber  | AlternativeNumber | EmailAddress        | LastModifiedDate     | LastModifiedTouchpointId |
-	| BOB       | 4                      | 07484503700  | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| ERIN      | 4                      | 07484503700  | 05100924950 | 08483057675       | email1@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| AARON     | 4                      | 07484503700  | 05100924950 | 08483057675       | email2@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| VERONICA  | 4                      | 07484503700  | 05100924950 | 08483057675       | email3@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| CAMERON   | 4                      | 07484503700  | 05100924950 | 08483057675       | email4@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| RONALD    | 4                      | 07484503700  | 05100924950 | 08483057675       | email5@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| RON       | 4                      | 07484503700  | 05100924950 | 08483057675       | email6@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
+	| RONNIE    | 4                      | 07484503700  | 05100924950 | 08483057675       | email7@domain2.test | 2019-01-23T00:00:00Z | 90000001                 |
 
-	Given I load test interaction data for this feature
-	#Parent for INTERACTION is CUSTOMER
-	| LoaderRef | TouchpointId | AdviserDetailsId                     | DateandTimeOfInteraction | Channel | InteractionType | LastModifiedDate     | LastModifiedTouchpointId |
-	| BOB       | 4            | bb940afb-1423-4999-a234-5a64a5c00831 | 2019-01-23T00:00:00Z     | 1       | 3               | 2019-01-23T00:00:00Z | 90000001                 |
-	| BOB       | 4            | bb940afb-1423-4999-a234-5a64a5c00831 | 2019-01-23T00:00:00Z     | 2       | 3               | 2019-01-23T00:00:00Z | 90000001                 |
-
-	Given I load test session data for the feature
-	#Parent for SESSION is INTERACTION
-	| LoaderRef | ParentRef | DateandTimeOfSession | VenuePostCode | SessionAttended      | ReasonForNonAttendance | LastModifiedDate     | LastModifiedTouchpointId |
-	| BOB         | 1         | 2018-06-21T14:45:00Z | NE9 7RG       | true                 |                        | 2019-01-23T00:00:00Z | 90000001                 |
-	| BOB         | 2         | 2018-06-21T14:45:00Z | NE9 7RG       | false                | 1                      | 2019-01-23T00:00:00Z | 90000001                 |
-
-	Given I load action plan data for the feature
-	#Parent for ACTION PLAN is SESSION
-	| LoaderRef | ParentRef | DateActionPlanCreated | CustomerCharterShownToCustomer | DateAndTimeCharterShown | DateActionPlanSentToCustomer | ActionPlanDeliveryMethod | DateActionPlanAcknowledged | PriorityCustomer | CurrentSituation |
-	| BOB       | 1         | 2018-07-30T09:00:00Z  | true                           | 2018-07-30T09:00:00Z    | 2018-07-30T09:00:00Z         | 1                        | 2018-07-30T09:00:00Z       | 1                | looking for work |
-
-	Given I load action data for the feature
-	#Parent for ACTION is ACTION PLAN
-	| LoaderRef | ParentRef | DateActionAgreed     | DateActionAimsToBeCompletedBy | ActionSummary    | SignpostedTo | ActionType | ActionStatus | PersonResponsible | LastModifiedDate     |
-	| BOB       | 1         | 2018-07-30T09:00:00Z | 2018-08-08T09:00:00Z          | Details of stuff | Someone      | 1          | 1            | 1                 | 2018-07-30T09:00:00Z |
-
-	Given I load outcome data for the feature
-	| LoaderRef | ParentRef | OutcomeType | OutcomeClaimedDate   | OutcomeEffectiveDate |
-	| BOB       | 1         | 3           | 2018-07-20T21:45:00Z | 2018-07-20T21:45:00Z | 
 
 	Given I have completed loading data and don't want to repeat for each test
 	And I have confirmed all test data is now in the backup data store
 
-
-	## ineractions
-	## session
-	## action plan
-	## etc
-
-
-@mytag
 Scenario: Synonym name search for Aaron
 	Given I enter a search with the following terms
 	| SearchTerm | Value    |
 	| GivenName  | erin     |
-	| FamilyName | O'Connors |
 	And I filter the results as follows
 	| FilterTerm  | Value                   |
-	| DateofBirth | eq 1953-02-13T00:00:00Z |
+	| DateofBirth | gt 1953-02-13T00:00:00Z |
 	When I submit the search
 	Then there should be a 200 response
 	And the response should include "GivenName" matches for:
@@ -77,18 +62,18 @@ Scenario: Synonym name search for Ronnie
 	When I submit the search
 	Then there should be a 200 response
 	And the response should include "GivenName" matches for:
-	| Value1 | Value2 | Value3   | Value4  | Value5 |
-	| Aaron  | Ron    | Veronica | Cameron | RONALD |
+	| Value1 | Value2 | Value3   | Value4  | Value5 | Value6 |
+	| Aaron  | Ron    | Veronica | Cameron | RONALD | Ronnie |
 
-Scenario: Synonym name search for Peter
-	Given I enter a search with the following terms
-	| SearchTerm | Value     |
-	| GivenName  | Peter     |
-	When I submit the search
-	Then there should be a 200 response
-	And the response should include "GivenName" matches for:
-	| Value1 | Value2 | Value3   | Value4  | Value5 |
-	| Aaron  | Ron    | Veronica | Cameron | RONALD |
+#Scenario: Synonym name search for Peter
+#	Given I enter a search with the following terms
+#	| SearchTerm | Value     |
+#	| GivenName  | Peter     |
+#	When I submit the search
+#	Then there should be a 200 response
+#	And the response should include "GivenName" matches for:
+#	| Value1 | Value2 | Value3   | Value4  | Value5 |
+#	| Aaron  | Ron    | Veronica | Cameron | RONALD |
 
 Scenario: Search with OR 
 

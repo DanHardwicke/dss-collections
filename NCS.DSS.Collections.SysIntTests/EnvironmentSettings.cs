@@ -12,6 +12,8 @@ namespace NCS.DSS.Collections.SysIntTests
             new EnvironmentSettingsConfigurationBuilder(nameof(NCS.DSS.Collections.SysIntTests)).BuildConfiguration();
 
         public string BaseUrl => Configuration["RestService:BaseUrl"];
+        public string TempSearchUrl => Configuration["RestService:TempSearchUrl"];
+        public string TempSearchKey => Configuration["RestService:TempSearchKey"];
         public string TouchPointId => Configuration["RestService:TouchPointId"];
         public string SubscriptionKey => Configuration["RestService:SubscriptionKey"];
         public string CosmosEndPoint => Configuration["CosmosDB:EndPoint"];

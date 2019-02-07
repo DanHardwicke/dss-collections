@@ -11,6 +11,7 @@ using NCS.DSS.Collections.SysIntTests.Helpers;
 using NCS.DSS.Collections.SysIntTests.Models;
 using NCS.DSS.TestHelperLibrary.Helpers;
 using System.Reflection;
+using System.Data;
 
 namespace NCS.DSS.Collections.SysIntTests.UnitTests
 {
@@ -42,6 +43,30 @@ namespace NCS.DSS.Collections.SysIntTests.UnitTests
     {
         private EnvironmentSettings envSettings = new EnvironmentSettings();
         private readonly List<Loader> LoaderData = new List<Loader>();
+
+
+        [TestMethod]
+        public void ExecuteStoredProc()
+        {
+            SQLServerHelper sqlInstance = new SQLServerHelper();
+            sqlInstance.SetConnection(envSettings.SqlConnectionString);
+            var ds = sqlInstance.ExecuteStoredProcedure("GetReportData");
+
+            List<Models.ReportRow> lstEmployee = ds.Tables[0].AsEnumerable().Select(
+                            dataRow => new ReportRow
+                            {
+                                CustomerId = dataRow.Field<Guid>("CustomerId").ToString(),
+                                DateofBirth = dataRow.Field<DateTime>("DateofBirth").ToString(),
+                                HomePostCode = dataRow.Field<string>("HomePostCode")
+                            }).ToList();
+
+            foreach ( var item in lstEmployee)
+            {
+                Console.Write(item.CustomerId);
+            }
+
+
+        }
 
         [TestMethod]
         public void DBTest()

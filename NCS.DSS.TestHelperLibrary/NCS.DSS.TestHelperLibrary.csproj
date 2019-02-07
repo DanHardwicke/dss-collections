@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Helpers\CosmosHelper.cs" />
+    <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\SQLServerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -32,7 +33,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
         private SearchResponse SearchResults;
         private readonly List<Loader> LoaderData = new List<Loader>();
         internal static readonly AzureSearchSingleton CustomerDataLoad = AzureSearchSingleton.Instance;
-
+        private List<Models.ReportRow> ReportRows;
         private readonly ScenarioContext scenarioContext;
 
         public StepDefinitions(ScenarioContext context)
@@ -40,19 +41,12 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             scenarioContext = context;
         }
 
-
-        // For additional details on SpecFlow step definitions see http://go.specflow.org/doc-stepdef
-
         public void SubmitTheSearch()
         {
-            //string url = envSettings.BaseUrl + "customers/api/CustomerSearch/?" + dict["parameter1"] + "=" + CheckForSpaces(dict["parameter2"]);
-            string url = "https://dss-at-shared-sch.search.windows.net/indexes/customer-search-index-v2/docs?api-version=2017-11-11&querytype=full" + SearchClause + FilterClause + SelectClause + PagingClause + CountClause;
-            response = /*RestHelper.*/GetSearch(url, envSettings.TouchPointId, "39263CCAE9A631A1BD95ECF1FC75B676");
-
+            string url = envSettings.TempSearchUrl + SearchClause + FilterClause + SelectClause + PagingClause + CountClause;
+            response = /*RestHelper.*/GetSearch(url, envSettings.TouchPointId, envSettings.TempSearchKey);
             SearchResults = JsonConvert.DeserializeObject<SearchResponse>(response.Content);
         }
-
-
 
         [When(@"I search")]
         public void WhenISearch()
@@ -65,7 +59,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
         {
             SubmitTheSearch();
         }
-
 
         [Given(@"I filter the results as follows")]
         public void GivenIFilterTheResultsAsFollows(Table table)
@@ -82,8 +75,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             }
             FilterClause = filterClause;
         }
-
-
 
         [Given(@"I enter a search with the following terms")]
         public void GivenIEnterASearchWithTheFollowingTerms(Table table)
@@ -107,8 +98,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             CountClause = "&$count=true";
         }
 
-
-
         [Given(@"I request a page limit of (.*) records")]
         public void GivenIRequestAPageLimitOfRecords(int p0)
         {
@@ -126,7 +115,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             SubmitTheSearch();
         }
 
-
         [When(@"I request the last page")]
         public void WhenIRequestTheLastPage()
         {
@@ -137,7 +125,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
 
             SubmitTheSearch();
         }
-
 
         [Then(@"results are returned")]
         public void ThenResultsAreReturned()
@@ -171,21 +158,17 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                     throw new Exception("The field: " + key + " is not supported");
             }
             tempList.Count().Should().BeGreaterThan(0, "because documents with " + key + " = " + value + " are expected in the response");
-
             return tempList.Count();
         }
-
 
         [Then(@"the response should include ""(.*)"" matches for:")]
         public void ThenTheResponseShouldIncludeMatchesFor(string p0, Table table)
         {
             //ictionary<string,string> dict = table.Rows.ToDictionary(r =>  r => r["Value"]);
             int tally = 0;
-
          
             foreach (var text in table.Rows[0].Values)
             {
-
                 tally += AssertValueInCustomerList(SearchResults.Results, p0, text);
 
                 //// first call to create the list (  haven't worked out how to do this more neatly yet )
@@ -211,7 +194,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             tally.Should().Be(SearchResults.Results.Count(),"Because otherwise documents where " + p0 + " does not match one of the specified values");
 
         }
-
 
         [Then(@"the response should include results for:")]
         public void ThenTheResponseShouldIncludeResultsFor(Table table)
@@ -244,7 +226,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 //list.Count().Should().BeGreaterThan(0, "because documents with " + testCondition.Key + " = " + testCondition.Value + " are expected in the response");
                 //tally += list.Count();
             }
-
             tally.Should().Be(SearchResults.Results.Count(), "Because otherwise results have been returned that do not match those expected");
         }
 
@@ -281,9 +262,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 .Select(i => i.CustomerID);
             PreviousResults.AddRange(list);
         }
-                
-
-
 
         [Given(@"I restrict the returned fields to")]
         public void GivenIRestrictTheReturnedFieldsTo(Table table)
@@ -295,9 +273,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 firstItem = false;
             }
         }
-
-
-
 
         [Then(@"the number of records returned should be (.*)")]
         public void ThenTheNumberOfRecordsReturnedShouldBe(int p0)
@@ -329,6 +304,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 return;
             }
             DataLoadHelper<LoadCustomer> dataLoadHelper = new DataLoadHelper<LoadCustomer>();
+            dataLoadHelper.FieldToRemoveFromJsonBeforeSQLInsert = "OptInMarketResearch";
             //Table processedTable = DataLoadHelper<LoadCustomer>.ReplaceTokensInTable(table);
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.CustomersPath ,string.Empty, constants.CustomerId);
             LoaderData.AddRange(list);
@@ -345,7 +321,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             DataLoadHelper<LoadAddress> dataLoadHelper = new DataLoadHelper<LoadAddress>();
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.AddressesPath, constants.CustomerId, constants.AddressId);
             LoaderData.AddRange(list);
-
         }
 
         [Given(@"I load test contact data for this feature:")]
@@ -373,7 +348,6 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             DataLoadHelper<LoadInteraction> dataLoadHelper = new DataLoadHelper<LoadInteraction>();
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.InteractionsPath, constants.CustomerId, constants.InteractionId);
             LoaderData.AddRange(list);
-
         }
 
         [Given(@"I load test session data for the feature")]
@@ -398,8 +372,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             DataLoadHelper<LoadActionPlan> dataLoadHelper = new DataLoadHelper<LoadActionPlan>();
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionPlansPathV2, constants.SessionId, constants.ActionPlanId );
             LoaderData.AddRange(list);
-            }
-
+         }
 
         [Given(@"I load action data for the feature")]
         public void GivenILoadActionDataForTheFeature(Table table)
@@ -412,9 +385,7 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             DataLoadHelper<LoadAction> dataLoadHelper = new DataLoadHelper<LoadAction>();
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.ActionsPathV2, constants.ActionPlanId, constants.ActionId);
             LoaderData.AddRange(list);
-
         }
-
 
         [Given(@"I load outcome data for the feature")]
         public void GivenILoadOutcomeDataForTheFeature(Table table)
@@ -423,12 +394,10 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
             {
                 return;
             }
-
             DataLoadHelper<LoadOutcome> dataLoadHelper = new DataLoadHelper<LoadOutcome>();
             var list = dataLoadHelper.ProcessDataTable(table, LoaderData, constants.OutcomesPathV2, constants.ActionPlanId, constants.OutcomeId);
             LoaderData.AddRange(list);
         }
-
 
         [Given(@"I have completed loading data and don't want to repeat for each test")]
         public void GivenIHaveCompletedLoadingDataAndDonTWantToRepeatForEachTest()
@@ -453,13 +422,58 @@ namespace NCS.DSS.Collections.SysIntTests.Steps
                 if (item.LoadedToSqlServer) // temp measure until change feed has been delivered
                 {
                     sqlHelper.AddReplacementRule(item.ParentType, "id");
-                //    sqlHelper.CheckRecordExists(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId).Should().BeTrue();
+                    sqlHelper.CheckRecordExists(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId).Should().BeTrue();
                 }
-
             }
             sqlHelper.CloseConnection();
             scenarioContext["SearchTestData"] = LoaderData;
         }
 
+        [Given(@"a request has been made and the report data is available")]
+        public void GivenARequestHasBeenMadeAndTheReportDataIsAvailable()
+        {
+            SQLServerHelper sqlInstance = new SQLServerHelper();
+            sqlInstance.SetConnection(envSettings.SqlConnectionString);
+            var ds = sqlInstance.ExecuteStoredProcedure("GetReportData");
+
+            ReportRows = ds.Tables[0].AsEnumerable().Select(
+                            dataRow => new ReportRow
+                            {
+                                CustomerId = dataRow.Field<Guid>("CustomerId").ToString(),
+                                DateofBirth = dataRow.Field<DateTime>("DateofBirth").ToString(),
+                                HomePostCode = dataRow.Field<string>("HomePostCode")
+                            }).ToList();
+        }
+
+
+        [Then(@"test customer ""(.*)"" is included in the report")]
+        public void ThenTestCustomerIsIncludedInTheReport(string p0)
+        {
+            // find the passing in string in the DataLoad collection and get the customer id
+            List<Loader> testData = (List<Loader>)scenarioContext["SearchTestData"];
+ 
+            var list = testData.Where(i => i.LoaderReference == p0 && i.ParentType == constants.CustomerId);
+            list.Count().Should().Be(1, "Because the should be 1 match for customer id and test data reference in the test data collection");
+            string customerId = list.First().ParentId;
+
+            // confirm if the customer id is in the ReportRows item list
+            var checkList = ReportRows.Where(j => j.CustomerId == customerId);
+            checkList.Count().Should().BeGreaterOrEqualTo(1, "Because otherwise the test customer " + p0 + "has not been found in the report");
+        }
+
+        [Then(@"test customer ""(.*)"" is not included in the report")]
+        public void ThenTestCustomerIsNotIncludedInTheReport(string p0)
+        {
+            // find the passing in string in the DataLoad collection and get the customer id
+            List<Loader> testData = (List<Loader>)scenarioContext["SearchTestData"];
+
+            var list = testData.Where(i => i.LoaderReference == p0 && i.ParentType == constants.CustomerId);
+            list.Count().Should().Be(1, "Because the should be 1 match for customer id and test data reference in the test data collection");
+            string customerId = list.First().ParentId;
+
+            // confirm if the customer id is in the ReportRows item list
+            var checkList = ReportRows.Where(j => j.CustomerId == customerId);
+            checkList.Count().Should().Be(0, "Because otherwise the test customer " + p0 + "has been unexpectedly found in the report");
+        }
     }
 }

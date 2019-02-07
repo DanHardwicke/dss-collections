@@ -32,6 +32,7 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
         [AfterScenario]
         public void AfterScenario()
         {
+            return;
             List<Loader> testData = (List<Loader>)scenarioContext["SearchTestData"];
             SQLServerHelper sqlHelper = new SQLServerHelper();
             CosmosHelper.Initialise(envSettings.CosmosEndPoint, envSettings.CosmosAccountKey);
@@ -40,23 +41,16 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
             foreach (var item in testData)
             {
                 if (item.LoadedToSqlServer) // temp measure until change feed has been delivered
+                                            // may not be required in all cases if change feed sends deletes
                 {
                     sqlHelper.AddReplacementRule(item.ParentType, "id");
                     Console.WriteLine("Delete from SQL server " + item.ParentType + " : " + item.ParentId);
                     var result = sqlHelper.DeleteRecord(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId);
                     result.Should().BeTrue("Because otherwise a record was not deleted");
-                }
-
-                // ?? does change feed send deletes?
-                CosmosHelper.DeleteDocument(constants.CollectionNameFromId(item.ParentType), constants.BackupTableNameFromId(item.ParentType), item.ParentId);
-
+                }             
+                CosmosHelper.DeleteDocument(constants.CollectionNameFromId(item.ParentType), constants.CollectionNameFromId(item.ParentType), item.ParentId);
             }
             sqlHelper.CloseConnection();
-          /*  foreach (var item in testData)
-            { 
-                Console.WriteLine("TODO delete " + item.ParentType + " : " + item.ParentId);
-            }
-            */
         }
     }
 }

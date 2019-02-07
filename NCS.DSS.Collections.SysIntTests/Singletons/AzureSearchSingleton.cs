@@ -16,11 +16,6 @@ namespace NCS.DSS.Collections.SysIntTests.Singletons
         private AzureSearchSingleton()
         {
         }
-        /* static readonly Lazy<AzureSearchSingleton> lazy = new Lazy<AzureSearchSingleton>(() => new AzureSearchSingleton());
-         private AzureSearchSingleton() { }
-
-         public static AzureSearchSingleton Instance => lazy.Value;
-         */
         private bool dataSetupExecuted = false;
 
         public bool DataSetupExecuted

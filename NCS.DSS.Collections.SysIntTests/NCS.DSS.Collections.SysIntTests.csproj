@@ -87,6 +87,8 @@
       <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.1\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
@@ -124,7 +126,6 @@
       <DependentUpon>Post.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DataLoadHelper.cs" />
-    <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\RestHelper.cs" />
     <Compile Include="Hooks\DCHooks.cs" />
     <Compile Include="Models\Action.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Models\LoadOutcome.cs" />
     <Compile Include="Models\LoadSession.cs" />
     <Compile Include="Models\Outcome.cs" />
+    <Compile Include="Models\ReportItem.cs" />
     <Compile Include="Models\SearchResponse.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,7 +155,9 @@
     <Compile Include="UnitTests\UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Features\AzureSearch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AzureSearch.feature.cs</LastGenOutput>

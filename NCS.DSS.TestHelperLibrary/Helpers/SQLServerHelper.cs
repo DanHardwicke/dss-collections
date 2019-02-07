@@ -2,10 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlTypes;
 
 namespace NCS.DSS.TestHelperLibrary.Helpers
 {
@@ -17,10 +16,6 @@ namespace NCS.DSS.TestHelperLibrary.Helpers
         public void  AddReplacementRule ( string original, string replacement)
         {
             ReplacementDict[original] = replacement;
-            //if (!ReplacementDict.ContainsKey(original) )
-            //{
-            //    ReplacementDict.Add(original, replacement);
-            //}
         }
 
         public void SetConnection(string connectionString)
@@ -100,6 +95,32 @@ namespace NCS.DSS.TestHelperLibrary.Helpers
             return true;
         }
 
+        public DataSet ExecuteStoredProcedure(string procName)
+        {
+            DataSet ds = new DataSet(procName);
+
+            if (Connection.State == System.Data.ConnectionState.Open || OpenConnection())
+            {
+                try
+                {
+                    SqlCommand myCommand = new SqlCommand(procName, Connection);
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    myCommand.Parameters.Add("@TouchPointId", SqlDbType.VarChar).Value = "9000000001";
+                    myCommand.Parameters.Add("@TaxYear", SqlDbType.VarChar).Value = "1920";
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = myCommand;
+                    da.Fill(ds);
+             
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+            return ds;
+        }
         public bool CheckRecordExists(string table, string primaryKey, string recordId)
         {
             bool success = false;
@@ -125,11 +146,8 @@ namespace NCS.DSS.TestHelperLibrary.Helpers
                 {
                     Console.WriteLine(e.ToString());
                 }
-
             }
-
             return success;
-
         }
 
         public bool DeleteRecord(string table, string primaryKey, string recordId)
@@ -150,42 +168,8 @@ namespace NCS.DSS.TestHelperLibrary.Helpers
                 {
                     Console.WriteLine(e.ToString());
                 }
-
             }
-
             return success;
         }
-
-
-        public void test()
-        {
-            SqlConnection myConnection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=testdb;User Id=TestUser;Password = password; ");
-            try
-            {
-                myConnection.Open();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-            try
-            {
-                SqlDataReader myReader = null;
-                SqlCommand myCommand = new SqlCommand("select * from Table_1",
-                                                         myConnection);
-                myReader = myCommand.ExecuteReader();
-                while (myReader.Read())
-                {
-                    Console.WriteLine(myReader["ID"].ToString());
-                    Console.WriteLine(myReader["Description"].ToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
     }
 }

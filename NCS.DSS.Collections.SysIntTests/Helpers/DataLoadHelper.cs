@@ -21,6 +21,7 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
         private EnvironmentSettings envSettings = new EnvironmentSettings();
         private static string TimestampString;// = DateTime.Now.ToString("yyMMddHHMMss");
         public bool LoadToBackupStore { get; set; } = true;
+        public string FieldToRemoveFromJsonBeforeSQLInsert { get; set; } = "";
 
         public DataLoadHelper()
         {
@@ -92,14 +93,17 @@ namespace NCS.DSS.Collections.SysIntTests.Helpers
                 newLoad.LoadedToSqlServer = false;
                 switch ( tokenToStore )
                 {
-                    case "CustomerId":
+                    //case "CustomerId":
                     case "OutcomeId":
                     case "ActionPlanId":
                         break;
                     default:
                         if (LoadToBackupStore)
                         {
-                            sqlHelper.InsertRecordFromJson( constants.BackupTableNameFromId(tokenToStore) , response.Content);
+                            sqlHelper.InsertRecordFromJson( constants.BackupTableNameFromId(tokenToStore) ,
+                                (FieldToRemoveFromJsonBeforeSQLInsert.Length > 0 ? 
+                                        JsonHelper.RemovePropertyFromJsonString(response.Content, FieldToRemoveFromJsonBeforeSQLInsert)
+                                        :  response.Content) );
                             newLoad.LoadedToSqlServer = true;
                         }
                     break;
