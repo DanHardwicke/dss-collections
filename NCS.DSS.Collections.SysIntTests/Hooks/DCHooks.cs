@@ -32,7 +32,6 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
         [AfterScenario]
         public void AfterScenario()
         {
-            return;
             List<Loader> testData = (List<Loader>)scenarioContext["SearchTestData"];
             SQLServerHelper sqlHelper = new SQLServerHelper();
             CosmosHelper.Initialise(envSettings.CosmosEndPoint, envSettings.CosmosAccountKey);
@@ -47,7 +46,8 @@ namespace NCS.DSS.Collections.SysIntTests.Hooks
                     Console.WriteLine("Delete from SQL server " + item.ParentType + " : " + item.ParentId);
                     var result = sqlHelper.DeleteRecord(constants.BackupTableNameFromId(item.ParentType), item.ParentType, item.ParentId);
                     result.Should().BeTrue("Because otherwise a record was not deleted");
-                }             
+                }
+                Console.WriteLine("Delete from Document Store " + item.ParentType + " : " + item.ParentId);
                 CosmosHelper.DeleteDocument(constants.CollectionNameFromId(item.ParentType), constants.CollectionNameFromId(item.ParentType), item.ParentId);
             }
             sqlHelper.CloseConnection();
